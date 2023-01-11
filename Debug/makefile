@@ -64,8 +64,8 @@ all: main-build
 main-build: SW_mind.elf secondary-outputs
 
 # Tool invocations
-SW_mind.elf SW_mind.map: $(OBJS) $(USER_OBJS) X:\Projekty\STM32CubeIDE\SW_mind\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "SW_mind.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"X:\Projekty\STM32CubeIDE\SW_mind\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SW_mind.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SW_mind.elf SW_mind.map: $(OBJS) $(USER_OBJS) C:\Users\ThinkPad-X1\Desktop\SW_mind\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "SW_mind.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\ThinkPad-X1\Desktop\SW_mind\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SW_mind.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

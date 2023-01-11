@@ -1,6 +1,7 @@
 "./Core/Src/M8_Disp.o"
 "./Core/Src/freertos.o"
 "./Core/Src/gpio.o"
+"./Core/Src/keypad.o"
 "./Core/Src/main.o"
 "./Core/Src/spi.o"
 "./Core/Src/stm32f4xx_hal_msp.o"

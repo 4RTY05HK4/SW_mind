@@ -58,6 +58,18 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void ObslugaKlawiatury( void * pvParameters )
+{
+	while(1){
+		scanRows();
+		uint8_t keycode = decode();
+		// insert keycode into buffer/queue/semafor
+		char *kod = '0';
+		sprintf(&kod, "%01d", keycode);
+		HAL_UART_Transmit(&huart2, &kod, 2, 10);
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -97,6 +109,13 @@ int main(void)
   /* Init scheduler */
   osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
+  xTaskCreate(
+		  	  	  	  ObslugaKlawiatury,    /* Function that implements the task. */
+                      "NAME",				/* Text name for the task. */
+                      1000,      			/* Stack size in words, not bytes. */
+                      NULL,    				/* Parameter passed into the task. */
+                      1,					/* Priority at which the task is created. */
+                      NULL );      			/* Used to pass out the created task's handle. */
 
   /* Start scheduler */
   osKernelStart();
@@ -106,6 +125,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		//scanRows();
+		//uint8_t keycode = decode();
+		//HAL_UART_Transmit(&huart2, &keycode, 2, 10);
+		//char *kod = '0';
+		//sprintf(&kod, "%01d", keycode);
+		//HAL_UART_Transmit(&huart2, &kod, 2, 10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
