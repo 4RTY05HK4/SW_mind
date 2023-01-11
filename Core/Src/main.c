@@ -64,11 +64,13 @@ void ObslugaKlawiatury( void * pvParameters )
 		scanRows();
 		uint8_t keycode = decode();
 		// insert keycode into buffer/queue/semafor
+		//xQueueSendToFront(keypadBuffer, keycode, 10);
 		char *kod = '0';
 		sprintf(&kod, "%01d", keycode);
 		HAL_UART_Transmit(&huart2, &kod, 2, 10);
 	}
 }
+
 
 /* USER CODE END 0 */
 
@@ -103,19 +105,19 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+  xTaskCreate(
+		  ObslugaKlawiatury,       /* Function that implements the task. */
+                      "NAME",          /* Text name for the task. */
+                      1000,      /* Stack size in words, not bytes. */
+                      NULL,    /* Parameter passed into the task. */
+                      1,/* Priority at which the task is created. */
+                      NULL );      /* Used to pass out the created task's handle. */
 
   /* USER CODE END 2 */
 
   /* Init scheduler */
   osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
-  xTaskCreate(
-		  	  	  	  ObslugaKlawiatury,    /* Function that implements the task. */
-                      "NAME",				/* Text name for the task. */
-                      1000,      			/* Stack size in words, not bytes. */
-                      NULL,    				/* Parameter passed into the task. */
-                      1,					/* Priority at which the task is created. */
-                      NULL );      			/* Used to pass out the created task's handle. */
 
   /* Start scheduler */
   osKernelStart();

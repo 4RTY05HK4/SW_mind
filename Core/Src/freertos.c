@@ -76,8 +76,8 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * File Name          :
-  * Description        :
+  * File Name          : freertos.c
+  * Description        : Code for freertos applications
   ******************************************************************************
   * @attention
   *

@@ -123,9 +123,10 @@ uint8_t decode(){
 					break;
 				default: rejLS = 0b00;
 	        }
+		return rejMS + rejLS + 1;
 	}
 
-	return rejMS + rejLS;
+	return 0;
 
 }
 
