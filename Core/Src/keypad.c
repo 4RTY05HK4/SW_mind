@@ -15,7 +15,7 @@ uint8_t scanRows(){
 
 	if(wej == 0)
 	{
-	        if(counter == 100)
+	        if(counter == 10000)
 	        {
 	            counter = 0;
 	            wyj = wyj * 2;
@@ -85,6 +85,7 @@ uint8_t readCols(){
 }
 
 uint8_t decode(){
+	scanRows();
 	uint8_t cols = readCols();
 	uint8_t rows = wyj;
 	uint8_t rejMS = 0;
