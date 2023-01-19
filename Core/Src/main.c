@@ -64,31 +64,35 @@ QueueHandle_t xQueue;
 void ObslugaKlawiatury( void * pvParameters )
 {
 	uint8_t keycode = 0;
-	uint8_t old_keycode[4] = {0,0,0,0};
-	uint8_t counter = 0;
+	uint8_t counter = 10000;
+	uint8_t flag = 0;
 	char *kod = '0';
+
+
+
 	while(1)
 	{
-		//scanRows();
-		//old_keycode = keycode;
-		if (counter%4 == 0) old_keycode[counter/4] = keycode;
 		keycode = decode();
-		// insert keycode into buffer/queue/semafor
-		//xQueueSendToFront(keypadBuffer, keycode, 10);
-		if(keycode != 0 && old_keycode[0] == 0 && old_keycode[1] == 0 && old_keycode[2] == 0 && old_keycode[3] == 0) //obsługa drgań styków
+
+		if (keycode != 0 && flag != 0)
 		{
-			  xQueue = xQueueCreate( 10, sizeof(uint8_t));
+			if(xQueueSend(xQueue, keycode, portMAX_DELAY) == pdPASS)
+			{
+				sprintf(&kod, "%01d", keycode);
+				HAL_UART_Transmit(&huart2, &kod, 2, 10);
+			}
+		flag = 0;
+		}
+		else if(!keycode && !flag)
+		{
+			if(!counter)
+			{
+				counter = 10000;
+				flag = 1;
+			}
+		counter--;
+		}
 
-			  if(xQueue != 0)
-			  {
-				  sprintf(&kod, "%01d", keycode);
-				  HAL_UART_Transmit(&huart2, &kod, 2, 10);
-			  // Queue was not created and must not be used.
-			  }
-		};
-
-		if(counter = 16) counter = 0;
-		else counter++;
 	}
 
 }
@@ -141,7 +145,8 @@ int main(void)
 
 
 
-
+  xQueue = xQueueCreate( 10, sizeof(uint8_t));
+  if(xQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
 
   /* USER CODE END 2 */
 
@@ -151,6 +156,7 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
+
 
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
