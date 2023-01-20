@@ -25,8 +25,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "M8_Disp.h"
 #include "queue.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+ struct Conf Conf1;
 
 /* USER CODE END PV */
 
@@ -54,21 +55,19 @@ void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
-QueueHandle_t xQueue;
+QueueHandle_t xQueue = NULL;
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void ObslugaKlawiatury( void * pvParameters )
+void KeyLOGIC( void * pvParameters )
 {
 	uint8_t keycode = 0;
 	uint8_t counter = 10000;
 	uint8_t flag = 0;
-	char *kod = '0';
-
-
+	char *code = '0';
 
 	while(1)
 	{
@@ -76,10 +75,10 @@ void ObslugaKlawiatury( void * pvParameters )
 
 		if (keycode != 0 && flag != 0)
 		{
-			if(xQueueSend(xQueue, keycode, portMAX_DELAY) == pdPASS)
+			if(xQueueSend(xQueue, (void*)&keycode, (TickType_t)10) == pdPASS)
 			{
-				sprintf(&kod, "%01d", keycode);
-				HAL_UART_Transmit(&huart2, &kod, 2, 10);
+				//sprintf(&code, "%01d", keycode);
+				//HAL_UART_Transmit(&huart2, &code, 2, 10);
 			}
 		flag = 0;
 		}
@@ -97,6 +96,30 @@ void ObslugaKlawiatury( void * pvParameters )
 
 }
 
+
+void DispLOGIC( void * pvParameters )
+{
+	uint8_t sign = 0;
+	uint8_t size = 0;
+	char *code = '    ';
+
+	while(1)
+	{
+	   if(xQueue != NULL)
+	   {
+		  sign = 0;
+	      if(xQueueReceive(xQueue, &(sign), (TickType_t)10) == pdPASS )
+	      {
+	    	  	if(sign > 9) size = 2;
+	    	  	else size = 1;
+				sprintf(&code, "%01d", sign);
+				HAL_UART_Transmit(&huart2, &code, 2, 10);
+				Disp_Write_Word(Conf1, &code, size);
+				code = '    ';
+	      }
+	   }
+	}
+}
 
 
 //vQueueDelete(xQueue);
@@ -135,9 +158,22 @@ int main(void)
   MX_USART2_UART_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
+  Conf1.GPIO_Pin=GPIO_PIN_6;
+  Conf1.GPIOx=GPIOB;
+  Conf1.hspi=hspi1;
+  Disp_Init(Conf1, 0x01);
+
   xTaskCreate(
-		  ObslugaKlawiatury,       /* Function that implements the task. */
-                      "NAME",          /* Text name for the task. */
+		  	  	  	  KeyLOGIC,       /* Function that implements the task. */
+                      "KEY",          /* Text name for the task. */
+                      1000,      /* Stack size in words, not bytes. */
+                      NULL,    /* Parameter passed into the task. */
+                      1,/* Priority at which the task is created. */
+                      NULL );      /* Used to pass out the created task's handle. */
+
+  xTaskCreate(
+		  	  	  	  DispLOGIC,       /* Function that implements the task. */
+                      "DISP",          /* Text name for the task. */
                       1000,      /* Stack size in words, not bytes. */
                       NULL,    /* Parameter passed into the task. */
                       1,/* Priority at which the task is created. */
@@ -148,6 +184,7 @@ int main(void)
   xQueue = xQueueCreate( 10, sizeof(uint8_t));
   if(xQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
 
+  Disp_Clear(Conf1);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -166,9 +203,9 @@ int main(void)
 		//scanRows();
 		//uint8_t keycode = decode();
 		//HAL_UART_Transmit(&huart2, &keycode, 2, 10);
-		//char *kod = '0';
-		//sprintf(&kod, "%01d", keycode);
-		//HAL_UART_Transmit(&huart2, &kod, 2, 10);
+		//char *code = '0';
+		//sprintf(&code, "%01d", keycode);
+		//HAL_UART_Transmit(&huart2, &code, 2, 10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

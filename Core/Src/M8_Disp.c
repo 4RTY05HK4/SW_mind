@@ -186,7 +186,7 @@ void Disp_Clear(struct Conf C)	/**Clear  Displays*/
 
 }
 
-void Disp_Write_Word(struct Conf C,char *D)
+void Disp_Write_Word(struct Conf C, char *D, uint8_t size)
 {
 	uint8_t data[4];
 	for (uint8_t i=0;i<8;i++)//przepisanie danych z pamięci na poszczególne wartości liczbowe do wyświetlenia
@@ -194,13 +194,14 @@ void Disp_Write_Word(struct Conf C,char *D)
 			for (uint8_t j=0;j<4;j++)
 			{
 				data[j] = (digits[D[j]-32][i]);
+				if(j>size-1) data[j] = (digits[0][i]);
 			}
 
 			Disp_Write(C,i+1,data);
 		}
 }
 
-void Disp_Write_Word_Shift(struct Conf C,char *D,uint8_t size)
+void Disp_Write_Word_Shift(struct Conf C, char *D, uint8_t size)
 {
 
 	uint8_t dataout[4];

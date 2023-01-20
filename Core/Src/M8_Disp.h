@@ -76,7 +76,7 @@ void Disp_Write(struct Conf,uint8_t address, uint8_t *Data);
  * \param[in]   Conf C		Struktura konfiguracyjna
  * \param[in] 	D			Wskaźnik na słowo
  */
-void Disp_Write_Word(struct Conf C,char *D);
+void Disp_Write_Word(struct Conf C,char *D,uint8_t size);
 
 /**
  * \brief Funkcja wyświetlająca czas
