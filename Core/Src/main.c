@@ -73,8 +73,9 @@ void KeyLOGIC( void * pvParameters )
 	{
 		keycode = decode();
 
-		if (keycode != 0 && flag != 0)
+		if (keycode > 0 && keycode < 11 && flag != 0)
 		{
+			--keycode;
 			if(xQueueSend(xQueue, (void*)&keycode, (TickType_t)10) == pdPASS)
 			{
 				//sprintf(&code, "%01d", keycode);
@@ -99,23 +100,25 @@ void KeyLOGIC( void * pvParameters )
 
 void DispLOGIC( void * pvParameters )
 {
-	uint8_t sign = 0;
-	uint8_t size = 0;
-	char *code = '    ';
+	uint8_t digits[10] = {0};
+	uint8_t buffer = 0;
+	char *code = ' ';
+	uint8_t counter = 0;
 
 	while(1)
 	{
 	   if(xQueue != NULL)
 	   {
-		  sign = 0;
-	      if(xQueueReceive(xQueue, &(sign), (TickType_t)10) == pdPASS )
+		  //digits[counter] = 0;
+	      if(xQueueReceive(xQueue, &(buffer), (TickType_t)10) == pdPASS )
 	      {
-	    	  	if(sign > 9) size = 2;
-	    	  	else size = 1;
-				sprintf(&code, "%01d", sign);
-				HAL_UART_Transmit(&huart2, &code, 2, 10);
-				Disp_Write_Word(Conf1, &code, size);
-				code = '    ';
+	    	  	digits[counter] = buffer;
+				sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
+				HAL_UART_Transmit(&huart2, &code, 4, 10);
+				Disp_Write_Word(Conf1, &code, counter+1);
+				//code = ' ';
+				if(counter < 9) counter++;
+				else counter = 0;
 	      }
 	   }
 	}
