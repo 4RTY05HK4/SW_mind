@@ -68,6 +68,8 @@ SemaphoreHandle_t keyPressedSemaphore;
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+
 void KeyLOGIC( void * pvParameters )
 {
 	uint8_t keycode = 0;
@@ -139,21 +141,41 @@ void DispLOGIC( void * pvParameters )
 	}
 }
 
+int * generateRandArray()
+{
+	char *code = '0';
+	static int tab[10];
+	int i = 0;
+	HAL_UART_Transmit(&huart2, "generate", 8, 10);
+	for(i=0; i<10;i++){
+		HAL_ADC_Start(&hadc1);
+		tab[i] = HAL_ADC_GetValue(&hadc1)%10;
+		sprintf(&code, "%1d", tab[i]);
+		HAL_UART_Transmit(&huart2, &code, 1, 10);
+	}
+	return tab;
+}
+
 void mainLOGIC( void * pvParameters )
 {
 
 	uint8_t buffer = 0;
 	char *code = '0';
+	uint8_t randomlyGeneratedArray[10];
+	int *pointerTorandomlyGeneratedArray;
+	pointerTorandomlyGeneratedArray = generateRandArray();
+	int i = 0;
+	HAL_UART_Transmit(&huart2, "copied", 6, 10);
+	for ( i = 0; i < 10; i++ ) {
+		randomlyGeneratedArray[i] = *(pointerTorandomlyGeneratedArray+i);
+		sprintf(&code, "%1d", randomlyGeneratedArray[i]);
+		HAL_UART_Transmit(&huart2, &code, 1, 10);
+	}
 
 	while(1)
 	{
-		HAL_ADC_Start(&hadc1);
-		uint8_t randomGeneratedValue;
-		randomGeneratedValue = HAL_ADC_GetValue(&hadc1)%10;
-		sprintf(&code, "%1d\n", randomGeneratedValue);
-		HAL_UART_Transmit(&huart2, &code, 1, 10);
 
-		if(keypadQueue != NULL) //&& keyPressedSemaphore != NULL)
+		/*if(keypadQueue != NULL) //&& keyPressedSemaphore != NULL)
 		{
 
 		  if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS )
@@ -172,10 +194,12 @@ void mainLOGIC( void * pvParameters )
 				}
 
 		  }
-	   }
+	   }*/
 	}
 }
 //vQueueDelete(keypadQueue);
+
+
 
 
 /* USER CODE END 0 */
