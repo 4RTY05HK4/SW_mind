@@ -175,7 +175,7 @@ void mainLOGIC( void * pvParameters )
 	while(1)
 	{
 
-		/*if(keypadQueue != NULL) //&& keyPressedSemaphore != NULL)
+		if(keypadQueue != NULL) //&& keyPressedSemaphore != NULL)
 		{
 
 		  if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS )
@@ -194,7 +194,7 @@ void mainLOGIC( void * pvParameters )
 				}
 
 		  }
-	   }*/
+	   }
 	}
 }
 //vQueueDelete(keypadQueue);
