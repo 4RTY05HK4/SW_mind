@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "adc.h"
 #include "spi.h"
 #include "usart.h"
 #include "gpio.h"
@@ -27,6 +28,7 @@
 /* USER CODE BEGIN Includes */
 #include "M8_Disp.h"
 #include "queue.h"
+#include "semphr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +57,11 @@ void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
-QueueHandle_t xQueue = NULL;
+QueueHandle_t keypadQueue = NULL;
+QueueHandle_t dispQueue = NULL;
+
+SemaphoreHandle_t readKeypadSemaphore;
+SemaphoreHandle_t keyPressedSemaphore;
 
 /* USER CODE END PFP */
 
@@ -65,34 +71,43 @@ QueueHandle_t xQueue = NULL;
 void KeyLOGIC( void * pvParameters )
 {
 	uint8_t keycode = 0;
-	uint8_t counter = 10000;
+	uint16_t counter = 10000;
 	uint8_t flag = 0;
 	char *code = '0';
 
 	while(1)
 	{
-		keycode = decode();
+		//if( readKeypadSemaphore != NULL )
+		//{
 
-		if (keycode > 0 && keycode < 11 && flag != 0)
-		{
-			--keycode;
-			if(xQueueSend(xQueue, (void*)&keycode, (TickType_t)10) == pdPASS)
-			{
-				//sprintf(&code, "%01d", keycode);
-				//HAL_UART_Transmit(&huart2, &code, 2, 10);
-			}
-		flag = 0;
-		}
-		else if(!keycode && !flag)
-		{
-			if(!counter)
-			{
-				counter = 10000;
-				flag = 1;
-			}
-		counter--;
-		}
 
+					keycode = decode();
+
+					if (keycode > 0 && keycode < 11 && flag != 0)
+					{
+						--keycode;
+						if( xSemaphoreTake( readKeypadSemaphore, ( TickType_t ) 10 ) == pdTRUE )
+						{
+							if(xQueueSendToBack(keypadQueue, (void*)&keycode, (TickType_t)10) == pdPASS)
+							{
+								//sprintf(&code, "%01d", keycode);
+								//HAL_UART_Transmit(&huart2, &code, 2, 10);
+								//xSemaphoreGive( keyPressedSemaphore );
+							}
+						}
+					flag = 0;
+					}
+					else if(!keycode && !flag)
+					{
+						if(!counter)
+						{
+							counter = 10000;
+							flag = 1;
+						}
+					counter--;
+					}
+
+		//}
 	}
 
 }
@@ -102,15 +117,15 @@ void DispLOGIC( void * pvParameters )
 {
 	uint8_t digits[10] = {0};
 	uint8_t buffer = 0;
-	char *code = ' ';
+	char *code =  '0';
 	uint8_t counter = 0;
 
 	while(1)
 	{
-	   if(xQueue != NULL)
+	   if(dispQueue != NULL)
 	   {
 		  //digits[counter] = 0;
-	      if(xQueueReceive(xQueue, &(buffer), (TickType_t)10) == pdPASS )
+	      if(xQueueReceive(dispQueue, &(buffer), (TickType_t)10) == pdPASS )
 	      {
 	    	  	digits[counter] = buffer;
 				sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
@@ -124,8 +139,43 @@ void DispLOGIC( void * pvParameters )
 	}
 }
 
+void mainLOGIC( void * pvParameters )
+{
 
-//vQueueDelete(xQueue);
+	uint8_t buffer = 0;
+	char *code = '0';
+
+	while(1)
+	{
+		HAL_ADC_Start(&hadc1);
+		uint8_t randomGeneratedValue;
+		randomGeneratedValue = HAL_ADC_GetValue(&hadc1)%10;
+		sprintf(&code, "%1d\n", randomGeneratedValue);
+		HAL_UART_Transmit(&huart2, &code, 1, 10);
+
+		if(keypadQueue != NULL) //&& keyPressedSemaphore != NULL)
+		{
+
+		  if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS )
+		  {
+				HAL_UART_Transmit(&huart2, "Received", 8, 10);
+				sprintf(&code, "%1d", buffer);
+				HAL_UART_Transmit(&huart2, &code, 1, 10);
+				//code = ' ';
+				if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
+				{
+					//sprintf(&code, "%01d", keycode);
+					HAL_UART_Transmit(&huart2, "Sent", 4, 10);
+					sprintf(&code, "%1d", buffer);
+					HAL_UART_Transmit(&huart2, &code, 1, 10);
+					xSemaphoreGive( readKeypadSemaphore );
+				}
+
+		  }
+	   }
+	}
+}
+//vQueueDelete(keypadQueue);
 
 
 /* USER CODE END 0 */
@@ -160,11 +210,20 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_SPI1_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   Conf1.GPIO_Pin=GPIO_PIN_6;
   Conf1.GPIOx=GPIOB;
   Conf1.hspi=hspi1;
   Disp_Init(Conf1, 0x01);
+
+  xTaskCreate(
+		  	  	  	  mainLOGIC,       /* Function that implements the task. */
+                      "MAIN",          /* Text name for the task. */
+                      1000,      /* Stack size in words, not bytes. */
+                      NULL,    /* Parameter passed into the task. */
+                      1,/* Priority at which the task is created. */
+                      NULL );      /* Used to pass out the created task's handle. */
 
   xTaskCreate(
 		  	  	  	  KeyLOGIC,       /* Function that implements the task. */
@@ -184,8 +243,16 @@ int main(void)
 
 
 
-  xQueue = xQueueCreate( 10, sizeof(uint8_t));
-  if(xQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
+
+  keypadQueue = xQueueCreate( 10, sizeof(uint8_t));
+  if(keypadQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
+  dispQueue = xQueueCreate( 10, sizeof(uint8_t));
+  if(dispQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
+
+  readKeypadSemaphore = xSemaphoreCreateBinary();
+  keyPressedSemaphore = xSemaphoreCreateBinary();
+
+  xSemaphoreGive( readKeypadSemaphore );
 
   Disp_Clear(Conf1);
   /* USER CODE END 2 */
@@ -196,7 +263,6 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
-
 
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
