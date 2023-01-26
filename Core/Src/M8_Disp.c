@@ -2,7 +2,7 @@
  * M8_Disp.c
  *
  *  Created on: Dec 2, 2022
- *      Author: Kamil
+ *      Author: Kamil Barański
  */
 #include "M8_Disp.h"
 
@@ -186,24 +186,24 @@ void Disp_Clear(struct Conf C)	/**Clear  Displays*/
 
 }
 
-void Disp_Write_Word(struct Conf C, char *D, uint8_t size)
+void Disp_Write_Word(struct Conf C,char *D, uint8_t size)
 {
 	uint8_t data[4];
 	for (uint8_t i=0;i<8;i++)//przepisanie danych z pamięci na poszczególne wartości liczbowe do wyświetlenia
 		{
 			for (uint8_t j=0;j<4;j++)
 			{
-				data[j] = (digits[D[j]-32][i]);
 				if(j>size-1) data[j] = (digits[0][i]);
+				else data[j] = (digits[D[j]-32][i]);
 			}
 
 			Disp_Write(C,i+1,data);
 		}
 }
 
-void Disp_Write_Word_Shift(struct Conf C, char *D, uint8_t size)
+void Disp_Write_Word_Shift(struct Conf C,char *D,uint8_t size)
 {
-
+	size +=4;
 	uint8_t dataout[4];
 	uint16_t datam[size][8];
 	uint8_t help=0;
@@ -212,7 +212,8 @@ void Disp_Write_Word_Shift(struct Conf C, char *D, uint8_t size)
 			{
 				for (uint8_t j=0;j<size;j++)
 				{
-					datam[j][i] = (digits[D[j]-32][i]);
+					if(j<4) datam[j][i] = (digits[0][i]);
+					else datam[j][i] = (digits[D[j-4]-32][i]);
 				}
 			}
 
@@ -257,12 +258,12 @@ void Disp_Write_Word_Shift(struct Conf C, char *D, uint8_t size)
 							dataout[3]=datam[3][j]& 0xff;
 							Disp_Write(C,j+1,dataout);
 							}
-		HAL_Delay(100);
+		vTaskDelay(100);
 						}
 if(5+help<size)
 {	for (uint8_t i=0;i<8;i++)
 				{
-						datam[4][i] = (digits[D[5+help]-32][i]);
+						datam[4][i] = (digits[D[1+help]-32][i]);
 				}
 		help++;
 }

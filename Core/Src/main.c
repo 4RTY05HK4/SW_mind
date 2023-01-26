@@ -133,6 +133,7 @@ void DispLOGIC( void * pvParameters )
 				sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
 				HAL_UART_Transmit(&huart2, &code, 4, 10);
 				Disp_Write_Word(Conf1, &code, counter+1);
+				//Disp_Write_Word_Shift(Conf1, "12345", 5);
 				//code = ' ';
 				if(counter < 9) counter++;
 				else counter = 0;

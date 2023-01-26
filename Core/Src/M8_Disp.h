@@ -2,7 +2,7 @@
  * M8_Disp.h
  *
  *  Created on: Dec 2, 2022
- *      Author: Kamil
+ *      Author: Kamil Barański
  *  \brief    Biblioteka Obslugi wyswietlacza
  *  Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8
  *
@@ -43,7 +43,7 @@ struct Conf{
  * \param[in]	address		adres pod który ma zostać wysłana dana
  * \param[in]	Data		Dana, która ma zostać wysłana
  */
-void SPI_Send(struct Conf C,uint8_t address, uint8_t Data);
+void SPI_Send(struct Conf C, uint8_t address, uint8_t Data);
 
 /**
  * \brief Funkcja inicjalizująca wyświetlacz i ustawiająca jego jasność
@@ -51,7 +51,7 @@ void SPI_Send(struct Conf C,uint8_t address, uint8_t Data);
  * \param[in]    C		Struktura konfiguracyjna
  * \param[in]	brightness	ustaiwenie jasności ekranu w zakresie 0-15
  */
-void Disp_Init(struct Conf,uint8_t brightness);
+void Disp_Init(struct Conf, uint8_t brightness);
 
 /**
  * \brief Funkcja czyszcząca wyświetlacz
@@ -68,7 +68,7 @@ void Disp_Clear(struct Conf C);
  * \param[in]	Data		Dana, która ma zostać wysłana()
  *
  */
-void Disp_Write(struct Conf,uint8_t address, uint8_t *Data);
+void Disp_Write(struct Conf, uint8_t address, uint8_t *Data);
 
 /**
  * \brief Funkcja wyświetlająca 4 znaki(słowo)
@@ -76,7 +76,7 @@ void Disp_Write(struct Conf,uint8_t address, uint8_t *Data);
  * \param[in]   Conf C		Struktura konfiguracyjna
  * \param[in] 	D			Wskaźnik na słowo
  */
-void Disp_Write_Word(struct Conf C,char *D,uint8_t size);
+void Disp_Write_Word(struct Conf C, char *D, uint8_t size);
 
 /**
  * \brief Funkcja wyświetlająca czas
@@ -84,7 +84,7 @@ void Disp_Write_Word(struct Conf C,char *D,uint8_t size);
  * \param[in]   Conf C		Struktura konfiguracyjna
  * \param[in] 	D			Wskaźnik na słowo(czas)
  */
-void Disp_Write_Time(struct Conf C,char *D);
+void Disp_Write_Time(struct Conf C, char *D);
 
 /**
  * \brief Funkcja wyświetlająca napis przesuwając go od prawej do lewej
@@ -93,6 +93,6 @@ void Disp_Write_Time(struct Conf C,char *D);
  * \param[in] 	D			Wskaźnik na słowo
  * \param[in]	size		Długosć słowa
  */
-void Disp_Write_Word_Shift(struct Conf C,char *D,uint8_t size);
+void Disp_Write_Word_Shift(struct Conf C, char *D, uint8_t size);
 
 #endif /* SRC_M8_DISP_H_ */
