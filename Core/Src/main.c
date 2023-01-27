@@ -121,6 +121,7 @@ void DispLOGIC( void * pvParameters )
 	uint8_t buffer = 0;
 	char *code =  '0';
 	uint8_t counter = 0;
+	uint8_t signs = 0;
 
 	while(1)
 	{
@@ -129,14 +130,34 @@ void DispLOGIC( void * pvParameters )
 		  //digits[counter] = 0;
 	      if(xQueueReceive(dispQueue, &(buffer), (TickType_t)10) == pdPASS )
 	      {
-	    	  	digits[counter] = buffer;
-				sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
-				HAL_UART_Transmit(&huart2, &code, 4, 10);
-				Disp_Write_Word(Conf1, &code, counter+1);
-				//Disp_Write_Word_Shift(Conf1, "12345", 5);
-				//code = ' ';
-				if(counter < 9) counter++;
-				else counter = 0;
+	    	  	switch(buffer)
+	    	  	{
+
+	    	  	case 108:
+	    	  		Disp_Clear(Conf1);
+	    	  		Disp_Write_Word(Conf1, "LOSS", 4);
+	    	  		break;
+	    	  	case 119:
+	    	  		Disp_Clear(Conf1);
+	    	  		Disp_Write_Word(Conf1, "WIN", 3);
+	    	  		break;
+	    	  	default:
+		    	  	digits[counter] = buffer;
+					sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
+					HAL_UART_Transmit(&huart2, &code, 4, 10);
+					Disp_Write_Word(Conf1, &code, counter+1);
+					//Disp_Write_Word_Shift(Conf1, "12345", 5);
+					//code = ' ';
+					counter++;
+					if(counter > signs)
+					{
+						signs++;
+						counter = 0;
+					}
+
+					break;
+
+	    	  	}
 	      }
 	   }
 	}
@@ -146,32 +167,41 @@ int * generateRandArray()
 {
 	char *code = '0';
 	static int tab[10];
-	int i = 0;
 	HAL_UART_Transmit(&huart2, "generate", 8, 10);
-	for(i=0; i<10;i++){
+	for(uint8_t i=0; i<=10 ;i++){
 		HAL_ADC_Start(&hadc1);
+		vTaskDelay(1);
 		tab[i] = HAL_ADC_GetValue(&hadc1)%10;
-		sprintf(&code, "%1d", tab[i]);
+		sprintf(&code, "%d", tab[i]);
 		HAL_UART_Transmit(&huart2, &code, 1, 10);
 	}
+	//Disp_Write_Word_Shift(Conf1, &code, 10);
 	return tab;
 }
+
 
 void mainLOGIC( void * pvParameters )
 {
 
 	uint8_t buffer = 0;
+	uint8_t check = 0;
 	char *code = '0';
+	char codeToUser[10] = {0};
+	uint8_t step = 0;
+	uint8_t stage = 0;
+	uint8_t loss = 'l';
+	uint8_t win = 'w';
 	uint8_t randomlyGeneratedArray[10];
 	int *pointerTorandomlyGeneratedArray;
 	pointerTorandomlyGeneratedArray = generateRandArray();
-	int i = 0;
 	HAL_UART_Transmit(&huart2, "copied", 6, 10);
-	for ( i = 0; i < 10; i++ ) {
+	for (uint8_t i = 0; i <= 10; i++ ) {
 		randomlyGeneratedArray[i] = *(pointerTorandomlyGeneratedArray+i);
 		sprintf(&code, "%1d", randomlyGeneratedArray[i]);
 		HAL_UART_Transmit(&huart2, &code, 1, 10);
 	}
+	sprintf(&codeToUser, "%1d", randomlyGeneratedArray[0]);
+	Disp_Write_Word_Shift(Conf1, &codeToUser, 1);
 
 	while(1)
 	{
@@ -185,14 +215,49 @@ void mainLOGIC( void * pvParameters )
 				sprintf(&code, "%1d", buffer);
 				HAL_UART_Transmit(&huart2, &code, 1, 10);
 				//code = ' ';
-				if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
+
+				if((buffer == randomlyGeneratedArray[stage]) && (step <= 10))
 				{
-					//sprintf(&code, "%01d", keycode);
-					HAL_UART_Transmit(&huart2, "Sent", 4, 10);
-					sprintf(&code, "%1d", buffer);
-					HAL_UART_Transmit(&huart2, &code, 1, 10);
-					xSemaphoreGive( readKeypadSemaphore );
+					if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
+					{
+						//sprintf(&code, "%01d", keycode);
+						HAL_UART_Transmit(&huart2, "Sent", 4, 10);
+						sprintf(&code, "%1d", buffer);
+						HAL_UART_Transmit(&huart2, &code, 1, 10);
+						stage++;
+						xSemaphoreGive( readKeypadSemaphore );
+						if(stage == step+1)
+						{
+							step++;
+							vTaskDelay(500);
+							sprintf(&code, "%d", randomlyGeneratedArray[step]);
+							strcat(&codeToUser, &code);
+							Disp_Write_Word_Shift(Conf1, &codeToUser, step+1);
+							stage = 0;
+						}
+					}
+
 				}
+				else if(step >= 11)
+				{
+					if(xQueueSendToBack(dispQueue, (void*)&win, (TickType_t)10) == pdPASS)
+					{
+						HAL_UART_Transmit(&huart2, "Sent", 4, 10);
+						HAL_UART_Transmit(&huart2, "WIN", 3, 10);
+						xSemaphoreGive( readKeypadSemaphore );
+					}
+				}
+
+				else
+				{
+					if(xQueueSendToBack(dispQueue, (void*)&loss, (TickType_t)10) == pdPASS)
+					{
+						HAL_UART_Transmit(&huart2, "Sent", 4, 10);
+						HAL_UART_Transmit(&huart2, "LOSS", 4, 10);
+						xSemaphoreGive( readKeypadSemaphore );
+					}
+				}
+
 
 		  }
 	   }
