@@ -189,8 +189,8 @@ void mainLOGIC( void * pvParameters )
 	char codeToUser[10] = {0};
 	uint8_t step = 0;
 	uint8_t stage = 0;
-	uint8_t loss = 'l';
-	uint8_t win = 'w';
+	uint8_t progres = 1;
+	uint8_t diff = 4;
 	uint8_t randomlyGeneratedArray[10];
 	int *pointerTorandomlyGeneratedArray;
 	pointerTorandomlyGeneratedArray = generateRandArray();
@@ -216,7 +216,7 @@ void mainLOGIC( void * pvParameters )
 				HAL_UART_Transmit(&huart2, &code, 1, 10);
 				//code = ' ';
 
-				if((buffer == randomlyGeneratedArray[stage]) && (step <= 10))
+				if((buffer == randomlyGeneratedArray[stage]) && (step <= diff-1))
 				{
 					if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
 					{
@@ -229,38 +229,40 @@ void mainLOGIC( void * pvParameters )
 						if(stage == step+1)
 						{
 							step++;
-							vTaskDelay(500);
-							sprintf(&code, "%d", randomlyGeneratedArray[step]);
-							strcat(&codeToUser, &code);
-							Disp_Write_Word_Shift(Conf1, &codeToUser, step+1);
-							stage = 0;
+							if(step <= diff-1){
+								vTaskDelay(500);
+								sprintf(&code, "%d", randomlyGeneratedArray[step]);
+								strcat(&codeToUser, &code);
+								Disp_Write_Word_Shift(Conf1, &codeToUser, step+1);
+								stage = 0;
+							}
 						}
 					}
-
 				}
-				else if(step >= 11)
-				{
-					if(xQueueSendToBack(dispQueue, (void*)&win, (TickType_t)10) == pdPASS)
-					{
-						HAL_UART_Transmit(&huart2, "Sent", 4, 10);
-						HAL_UART_Transmit(&huart2, "WIN", 3, 10);
-						xSemaphoreGive( readKeypadSemaphore );
-					}
-				}
-
-				else
-				{
-					if(xQueueSendToBack(dispQueue, (void*)&loss, (TickType_t)10) == pdPASS)
-					{
-						HAL_UART_Transmit(&huart2, "Sent", 4, 10);
-						HAL_UART_Transmit(&huart2, "LOSS", 4, 10);
-						xSemaphoreGive( readKeypadSemaphore );
-					}
-				}
-
-
+				else if(step >= diff) progres = 2;
+				else progres = 0;
 		  }
 	   }
+		if(step >= diff) progres = 2;
+		//else if(step < diff) progres = 0;
+		if(progres == 2)
+		{
+			if(xQueueSendToBack(dispQueue, (void*)"w", (TickType_t)10) == pdPASS)
+			{
+				HAL_UART_Transmit(&huart2, "Sent", 4, 10);
+				HAL_UART_Transmit(&huart2, "WIN", 3, 10);
+				xSemaphoreGive( readKeypadSemaphore );
+			}
+		}
+		else if(progres == 0)
+		{
+			if(xQueueSendToBack(dispQueue, (void*)"l", (TickType_t)10) == pdPASS)
+			{
+				HAL_UART_Transmit(&huart2, "Sent", 4, 10);
+				HAL_UART_Transmit(&huart2, "LOSS", 4, 10);
+				xSemaphoreGive( readKeypadSemaphore );
+			}
+		}
 	}
 }
 //vQueueDelete(keypadQueue);
