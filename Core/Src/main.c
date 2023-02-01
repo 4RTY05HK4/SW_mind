@@ -29,6 +29,7 @@
 #include "M8_Disp.h"
 #include "queue.h"
 #include "semphr.h"
+#include "keypad.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,7 +62,7 @@ QueueHandle_t keypadQueue = NULL;
 QueueHandle_t dispQueue = NULL;
 
 SemaphoreHandle_t readKeypadSemaphore;
-SemaphoreHandle_t keyPressedSemaphore;
+//SemaphoreHandle_t keyPressedSemaphore;
 
 /* USER CODE END PFP */
 
@@ -137,14 +138,14 @@ void DispLOGIC( void * pvParameters )
 	    	  		Disp_Clear(Conf1);
 	    	  		Disp_Write_Word(Conf1, "LOSS", 4);
 	    	  		vTaskDelay(500);
-	    	  		Disp_Write_Word(Conf1, "    ", 4);
+	    	  		Disp_Clear(Conf1);
 	    	  		vTaskDelay(250);
 	    	  		break;
 	    	  	case 119:
 	    	  		Disp_Clear(Conf1);
 	    	  		Disp_Write_Word(Conf1, "WIN", 3);
 	    	  		vTaskDelay(250);
-	    	  		Disp_Write_Word(Conf1, "    ", 4);
+	    	  		Disp_Clear(Conf1);
 	    	  		vTaskDelay(250);
 	    	  		break;
 	    	  	default:
@@ -354,7 +355,7 @@ int main(void)
   if(dispQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
 
   readKeypadSemaphore = xSemaphoreCreateBinary();
-  keyPressedSemaphore = xSemaphoreCreateBinary();
+  //keyPressedSemaphore = xSemaphoreCreateBinary();
 
   xSemaphoreGive( readKeypadSemaphore );
 
