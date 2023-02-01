@@ -136,10 +136,16 @@ void DispLOGIC( void * pvParameters )
 	    	  	case 108:
 	    	  		Disp_Clear(Conf1);
 	    	  		Disp_Write_Word(Conf1, "LOSS", 4);
+	    	  		vTaskDelay(500);
+	    	  		Disp_Write_Word(Conf1, "    ", 4);
+	    	  		vTaskDelay(250);
 	    	  		break;
 	    	  	case 119:
 	    	  		Disp_Clear(Conf1);
 	    	  		Disp_Write_Word(Conf1, "WIN", 3);
+	    	  		vTaskDelay(250);
+	    	  		Disp_Write_Word(Conf1, "    ", 4);
+	    	  		vTaskDelay(250);
 	    	  		break;
 	    	  	default:
 		    	  	digits[counter] = buffer;
