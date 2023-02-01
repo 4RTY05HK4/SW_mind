@@ -189,8 +189,8 @@ void mainLOGIC( void * pvParameters )
 	char codeToUser[10] = {0};
 	uint8_t step = 0;
 	uint8_t stage = 0;
-	uint8_t progres = 1;
-	uint8_t diff = 4;
+	uint8_t progres = 4; // 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select
+	uint8_t diff = 5;
 	uint8_t randomlyGeneratedArray[10];
 	int *pointerTorandomlyGeneratedArray;
 	pointerTorandomlyGeneratedArray = generateRandArray();
@@ -200,8 +200,8 @@ void mainLOGIC( void * pvParameters )
 		sprintf(&code, "%1d", randomlyGeneratedArray[i]);
 		HAL_UART_Transmit(&huart2, &code, 1, 10);
 	}
-	sprintf(&codeToUser, "%1d", randomlyGeneratedArray[0]);
-	Disp_Write_Word_Shift(Conf1, &codeToUser, 1);
+	//sprintf(&codeToUser, "%1d", randomlyGeneratedArray[0]);
+	//Disp_Write_Word_Shift(Conf1, &codeToUser, 1);
 
 	while(1)
 	{
@@ -215,8 +215,14 @@ void mainLOGIC( void * pvParameters )
 				sprintf(&code, "%1d", buffer);
 				HAL_UART_Transmit(&huart2, &code, 1, 10);
 				//code = ' ';
-
-				if((buffer == randomlyGeneratedArray[stage]) && (step <= diff-1))
+				if(progres == 4) {
+					diff = buffer + 1;
+					progres = 1;
+					xSemaphoreGive( readKeypadSemaphore );
+					sprintf(&codeToUser, "%1d", randomlyGeneratedArray[0]);
+					Disp_Write_Word_Shift(Conf1, &codeToUser, 1);
+				}
+				else if(progres == 1 && (buffer == randomlyGeneratedArray[stage]) && (step <= diff-1))
 				{
 					if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
 					{
