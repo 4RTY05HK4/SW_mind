@@ -70,7 +70,13 @@ SemaphoreHandle_t readKeypadSemaphore;
 /* USER CODE BEGIN 0 */
 
 
-
+/**
+ * \brief Funkcja zadania systemu FreeRTOS obsługująca odczyt z klawiatury matrycowej.
+ * Funkcja decode() zwraca kod (liczbę od 1 do 16) wciśniętego przycisku. Zadanie sprawdza kod przycisku,
+ * ponieważ ze względu na charakter projektu używane jest tylko 10 pierwszych klawiszy, a następnie kod
+ * przycisku konwertowany jest na wartość, która zapisywana jest do kolejki keypadQueue, pod warunkiem
+ * że ustawiony jest semafor readKeypadSemaphore.
+ */
 void KeyLOGIC( void * pvParameters )
 {
 	uint8_t keycode = 0;
@@ -80,39 +86,27 @@ void KeyLOGIC( void * pvParameters )
 
 	while(1)
 	{
-		//if( readKeypadSemaphore != NULL )
-		//{
+		keycode = decode();
 
-
-					keycode = decode();
-
-					if (keycode > 0 && keycode < 11 && flag != 0)
-					{
-						--keycode;
-						if( xSemaphoreTake( readKeypadSemaphore, ( TickType_t ) 10 ) == pdTRUE )
-						{
-							if(xQueueSendToBack(keypadQueue, (void*)&keycode, (TickType_t)10) == pdPASS)
-							{
-								//sprintf(&code, "%01d", keycode);
-								//HAL_UART_Transmit(&huart2, &code, 2, 10);
-								//xSemaphoreGive( keyPressedSemaphore );
-							}
-						}
-					flag = 0;
-					}
-					else if(!keycode && !flag)
-					{
-						if(!counter)
-						{
-							counter = 10000;
-							flag = 1;
-						}
-					counter--;
-					}
-
-		//}
+		if (keycode > 0 && keycode < 11 && flag != 0)
+		{
+			--keycode;
+			if( xSemaphoreTake( readKeypadSemaphore, ( TickType_t ) 10 ) == pdTRUE )
+			{
+				if(xQueueSendToBack(keypadQueue, (void*)&keycode, (TickType_t)10) == pdPASS){}
+			}
+		flag = 0;
+		}
+		else if(!keycode && !flag)
+		{
+			if(!counter)
+			{
+				counter = 10000;
+				flag = 1;
+			}
+		counter--;
+		}
 	}
-
 }
 
 
