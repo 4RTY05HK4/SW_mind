@@ -50,6 +50,10 @@
 
 /* USER CODE BEGIN PV */
  struct Conf Conf1;
+ QueueHandle_t keypadQueue = NULL;
+ QueueHandle_t dispQueue = NULL;
+
+ SemaphoreHandle_t readKeypadSemaphore;
 
 /* USER CODE END PV */
 
@@ -58,11 +62,6 @@ void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
-QueueHandle_t keypadQueue = NULL;
-QueueHandle_t dispQueue = NULL;
-
-SemaphoreHandle_t readKeypadSemaphore;
-//SemaphoreHandle_t keyPressedSemaphore;
 
 /* USER CODE END PFP */
 
@@ -109,7 +108,12 @@ void KeyLOGIC( void * pvParameters )
 	}
 }
 
-
+/**
+ * \brief Funkcja zadania systemu FreeRTOS obsługująca wyświetlacz matrycowy LED.
+ * Funkcja odczytuje dane otrzymane z kolejki dispQueue i wyświetla je przy użyciu funkcji Disp_Write_Word()
+ * z biblioteki M8_Disp. W przypadku otrzymania wartości odpowiadającej literom "l' lub "w"
+ * funkcja wyświetla odpowiednie słowa komunikujące przegraną lub wygraną.
+ */
 void DispLOGIC( void * pvParameters )
 {
 	uint8_t digits[10] = {0};
@@ -120,63 +124,60 @@ void DispLOGIC( void * pvParameters )
 
 	while(1)
 	{
-	   if(dispQueue != NULL)
-	   {
-		  //digits[counter] = 0;
-	      if(xQueueReceive(dispQueue, &(buffer), (TickType_t)10) == pdPASS )
-	      {
-	    	  	switch(buffer)
-	    	  	{
+		if(dispQueue != NULL)
+		{
+			if(xQueueReceive(dispQueue, &(buffer), (TickType_t)10) == pdPASS )
+			{
+				switch(buffer)
+				{
 
-	    	  	case 108:
-	    	  		Disp_Clear(Conf1);
-	    	  		Disp_Write_Word(Conf1, "LOSS", 4);
-	    	  		vTaskDelay(500);
-	    	  		Disp_Clear(Conf1);
-	    	  		vTaskDelay(250);
-	    	  		break;
-	    	  	case 119:
-	    	  		Disp_Clear(Conf1);
-	    	  		Disp_Write_Word(Conf1, "WIN", 3);
-	    	  		vTaskDelay(250);
-	    	  		Disp_Clear(Conf1);
-	    	  		vTaskDelay(250);
-	    	  		break;
-	    	  	default:
-		    	  	digits[counter] = buffer;
-					sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
-					//HAL_UART_Transmit(&huart2, &code, 4, 10);
-					Disp_Write_Word(Conf1, &code, counter+1);
-					//Disp_Write_Word_Shift(Conf1, "12345", 5);
-					//code = ' ';
-					counter++;
-					if(counter > signs)
-					{
-						signs++;
-						counter = 0;
-					}
-
-					break;
-
-	    	  	}
-	      }
-	   }
+					case 108:
+						Disp_Clear(Conf1);
+						Disp_Write_Word(Conf1, "LOSS", 4);
+						vTaskDelay(500);
+						Disp_Clear(Conf1);
+						vTaskDelay(250);
+						break;
+					case 119:
+						Disp_Clear(Conf1);
+						Disp_Write_Word(Conf1, "WIN", 3);
+						vTaskDelay(250);
+						Disp_Clear(Conf1);
+						vTaskDelay(250);
+						break;
+					default:
+						digits[counter] = buffer;
+						sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
+						Disp_Write_Word(Conf1, &code, counter+1);
+						counter++;
+						if(counter > signs)
+						{
+							signs++;
+							counter = 0;
+						}
+						break;
+				}
+			}
+		}
 	}
 }
 
+/**
+ * \brief Funkcja generująca tablicę 10 losowych liczb. Do generacji użyto przetwornika ADC.
+ * Odczytuje on szumy z wiszącego wyprowadzenia mikrokontrolera, które następnie zamieniane są na liczby
+ * z zakresu od 1 do 10.
+ */
 int * generateRandArray()
 {
 	char *code = '0';
 	static int tab[10];
-	//HAL_UART_Transmit(&huart2, "generate", 8, 10);
+
 	for(uint8_t i=0; i<=10 ;i++){
 		HAL_ADC_Start(&hadc1);
 		vTaskDelay(1);
 		tab[i] = HAL_ADC_GetValue(&hadc1)%10;
-		//sprintf(&code, "%d", tab[i]);
-		//HAL_UART_Transmit(&huart2, &code, 1, 10);
 	}
-	//Disp_Write_Word_Shift(Conf1, &code, 10);
+
 	return tab;
 }
 
@@ -190,7 +191,7 @@ void mainLOGIC( void * pvParameters )
 	char codeToUser[10] = {0};
 	uint8_t step = 0;
 	uint8_t stage = 0;
-	uint8_t progres = 4; // 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select
+	uint8_t progres = 4; /*! 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select */
 	uint8_t diff = 5;
 	uint8_t randomlyGeneratedArray[10];
 	int *pointerTorandomlyGeneratedArray;
@@ -272,7 +273,6 @@ void mainLOGIC( void * pvParameters )
 		}
 	}
 }
-//vQueueDelete(keypadQueue);
 
 
 
@@ -317,40 +317,38 @@ int main(void)
   Disp_Init(Conf1, 0x01);
 
   xTaskCreate(
-		  	  	  	  mainLOGIC,       /* Function that implements the task. */
-                      "MAIN",          /* Text name for the task. */
-                      1000,      /* Stack size in words, not bytes. */
-                      NULL,    /* Parameter passed into the task. */
-                      1,/* Priority at which the task is created. */
-                      NULL );      /* Used to pass out the created task's handle. */
+		  	  	  	  mainLOGIC,      	/* Function that implements the task. */
+                      "MAIN",          	/* Text name for the task. */
+                      1000,      		/* Stack size in words, not bytes. */
+                      NULL,    			/* Parameter passed into the task. */
+					  1,				/* Priority at which the task is created. */
+                      NULL );     		/* Used to pass out the created task's handle. */
 
   xTaskCreate(
-		  	  	  	  KeyLOGIC,       /* Function that implements the task. */
-                      "KEY",          /* Text name for the task. */
-                      1000,      /* Stack size in words, not bytes. */
-                      NULL,    /* Parameter passed into the task. */
-                      1,/* Priority at which the task is created. */
-                      NULL );      /* Used to pass out the created task's handle. */
+		  	  	  	  KeyLOGIC,       	/* Function that implements the task. */
+                      "KEY",          	/* Text name for the task. */
+                      1000,      		/* Stack size in words, not bytes. */
+                      NULL,    			/* Parameter passed into the task. */
+                      1,				/* Priority at which the task is created. */
+                      NULL );      		/* Used to pass out the created task's handle. */
 
   xTaskCreate(
-		  	  	  	  DispLOGIC,       /* Function that implements the task. */
-                      "DISP",          /* Text name for the task. */
-                      1000,      /* Stack size in words, not bytes. */
-                      NULL,    /* Parameter passed into the task. */
-                      1,/* Priority at which the task is created. */
-                      NULL );      /* Used to pass out the created task's handle. */
+		  	  	  	  DispLOGIC,       	/* Function that implements the task. */
+                      "DISP",          	/* Text name for the task. */
+                      1000,      		/* Stack size in words, not bytes. */
+                      NULL,    			/* Parameter passed into the task. */
+                      1,				/* Priority at which the task is created. */
+					  NULL );      		/* Used to pass out the created task's handle. */
 
 
 
 
-  keypadQueue = xQueueCreate( 10, sizeof(uint8_t));
+  keypadQueue = xQueueCreate( 10, sizeof(uint8_t)); /*! Utworzenie kolejki 10 elementowej dla przesyłu kodów klawiszy. */
   if(keypadQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
-  dispQueue = xQueueCreate( 10, sizeof(uint8_t));
-  if(dispQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
+  dispQueue = xQueueCreate( 10, sizeof(uint8_t)); /*! Utworzenie kolejki 10 elementowej dla przesyłu znaków do wyświetlenia */
+  if(dispQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10); /*! */
 
-  readKeypadSemaphore = xSemaphoreCreateBinary();
-  //keyPressedSemaphore = xSemaphoreCreateBinary();
-
+  readKeypadSemaphore = xSemaphoreCreateBinary(); /*! Utworzenie semafora zezwalającego na zapis kodu klawisza do kolejki*/
   xSemaphoreGive( readKeypadSemaphore );
 
   Disp_Clear(Conf1);
@@ -368,12 +366,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		//scanRows();
-		//uint8_t keycode = decode();
-		//HAL_UART_Transmit(&huart2, &keycode, 2, 10);
-		//char *code = '0';
-		//sprintf(&code, "%01d", keycode);
-		//HAL_UART_Transmit(&huart2, &code, 2, 10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
