@@ -15,6 +15,38 @@
   *
   ******************************************************************************
   */
+
+/*! \mainpage Mind game
+ *
+ * \section intro Założenia
+ *
+ * Projekt zakłada stworzenie gry w oparciu o mikrokontroler wspierający system FreeRTOS, oraz peryfiera w postaci
+ * klawiatury matrycowej i wyświetlacz matrycowy LED.
+ *
+ * \section rules Zasady
+ * Po wybraniu poziomu trudności na wyświetlaczu pojawi się pierwszy element z sekwencji przykładowych znaków
+ * (wylosowanych z określonego zbioru dziesięciu cyfr od 0 do 9), zadaniem gracza jest zapamiętanie tej sekwencji
+ * i po zakończeniu jej wyświetlania odtworzenie kolejności znaków za pośrednictwem klawiatury (każdy znak posiada
+ * przyporządkowany jeden przycisk). W każdym etapie gry zwiększana jest liczba znaków do zapamiętania (modyfikacja
+ * może także polegać na zwiększaniu zbioru możliwych znaków do zapamiętania). Gra kończy się w momencie, kiedy
+ * gracz popełni pomyłkę podczas wprowadzania sekwencji znaków lub gdy wprowadzi wszystkie znaki które zostały wylosowane.
+ * Grę można w dowolnym momencie przerwać poprzez naciśnięcie przycisku Start.
+ *
+ * \section perypherials Peryferia
+ *
+ * \subsection rand Generator liczb losowych
+ * Generowanie liczb w sposób losowy odbywa się za pośrednictwem przetwornika ADC w funkcji generateRandArray().
+ * Za jego pomocą zczytywane są wartości z tzw. "wiszącego kabla", które następnie konwertowane są na liczby od 0 do 9.
+ *
+ * \subsection led Wyświetlacz matrycowy LED
+ * Obsługę wyświetlacza matrycowego realizuje zadanie DispLOGIC() przy pomocy biblioteki M8_Disp.h stworzonej na potrzebę innych zajęć.
+ *
+ * \subsection keypad Klawiatura matrycowa
+ * Obsługę klawiatury matrycowej realizuje zadanie KeyLOGIC() przy pomocy biblioteki keypad.h stworzonej na potrzebę projektu.
+ *
+ *
+ *
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -181,42 +213,38 @@ int * generateRandArray()
 	return tab;
 }
 
-
+/**
+ * \brief Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu. Przed rozpoczęciem pracy funkcja generuje
+ * tablicę 10 losowych liczb przy użyciu funkcji generateRandArray(). W głównej pętli zadanie oczekuje na otrzymanie
+ * kodu przycisku za pośrednictwem kolejki keypadQueue. Przy pierwszym uruchomieniu zadanie będzie oczekiwać na wciśnięcie
+ * klawisza od 1 do 10 oznaczającego wybór poziomu trudności. Gdy gracz wybierze poziom trudności wówczas zadanie
+ * rozpocznie grę, wysyłając pierwszą losową wygenerowaną liczbę, po czym będzie oczekiwać na wprowadzenie przez użytkownika
+ * odpowiedniej wartości z klawiatury ...
+ */
 void mainLOGIC( void * pvParameters )
 {
-
 	uint8_t buffer = 0;
-	uint8_t check = 0;
 	char *code = '0';
 	char codeToUser[10] = {0};
 	uint8_t step = 0;
 	uint8_t stage = 0;
-	uint8_t progres = 4; /*! 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select */
-	uint8_t diff = 5;
+	uint8_t progres = 4; // 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select
+	uint8_t diff = 5; // Poziom trudności domyślnie ustawiony na 5
+
 	uint8_t randomlyGeneratedArray[10];
 	int *pointerTorandomlyGeneratedArray;
 	pointerTorandomlyGeneratedArray = generateRandArray();
-	//HAL_UART_Transmit(&huart2, "copied", 6, 10);
+
 	for (uint8_t i = 0; i <= 10; i++ ) {
 		randomlyGeneratedArray[i] = *(pointerTorandomlyGeneratedArray+i);
-		//sprintf(&code, "%1d", randomlyGeneratedArray[i]);
-		//HAL_UART_Transmit(&huart2, &code, 1, 10);
 	}
-	//sprintf(&codeToUser, "%1d", randomlyGeneratedArray[0]);
-	//Disp_Write_Word_Shift(Conf1, &codeToUser, 1);
 
 	while(1)
 	{
-
-		if(keypadQueue != NULL) //&& keyPressedSemaphore != NULL)
+		if(keypadQueue != NULL)
 		{
-
-		  if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS )
-		  {
-				//HAL_UART_Transmit(&huart2, "Received", 8, 10);
-				//sprintf(&code, "%1d", buffer);
-				//HAL_UART_Transmit(&huart2, &code, 1, 10);
-				//code = ' ';
+			if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS )
+			{
 				if(progres == 4) {
 					diff = buffer + 1;
 					progres = 1;
@@ -228,10 +256,6 @@ void mainLOGIC( void * pvParameters )
 				{
 					if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
 					{
-						//sprintf(&code, "%01d", keycode);
-						//HAL_UART_Transmit(&huart2, "Sent", 4, 10);
-						//sprintf(&code, "%1d", buffer);
-						//HAL_UART_Transmit(&huart2, &code, 1, 10);
 						stage++;
 						xSemaphoreGive( readKeypadSemaphore );
 						if(stage == step+1)
@@ -249,16 +273,13 @@ void mainLOGIC( void * pvParameters )
 				}
 				else if(step >= diff) progres = 2;
 				else progres = 0;
-		  }
-	   }
+			}
+		}
 		if(step >= diff) progres = 2;
-		//else if(step < diff) progres = 0;
 		if(progres == 2)
 		{
 			if(xQueueSendToBack(dispQueue, (void*)"w", (TickType_t)10) == pdPASS)
 			{
-				//HAL_UART_Transmit(&huart2, "Sent", 4, 10);
-				//HAL_UART_Transmit(&huart2, "WIN", 3, 10);
 				xSemaphoreGive( readKeypadSemaphore );
 			}
 		}
@@ -266,16 +287,11 @@ void mainLOGIC( void * pvParameters )
 		{
 			if(xQueueSendToBack(dispQueue, (void*)"l", (TickType_t)10) == pdPASS)
 			{
-				//HAL_UART_Transmit(&huart2, "Sent", 4, 10);
-				//HAL_UART_Transmit(&huart2, "LOSS", 4, 10);
 				xSemaphoreGive( readKeypadSemaphore );
 			}
 		}
 	}
 }
-
-
-
 
 /* USER CODE END 0 */
 
