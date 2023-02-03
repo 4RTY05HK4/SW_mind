@@ -214,12 +214,32 @@ int * generateRandArray()
 }
 
 /**
- * \brief Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu. Przed rozpoczęciem pracy funkcja generuje
- * tablicę 10 losowych liczb przy użyciu funkcji generateRandArray(). W głównej pętli zadanie oczekuje na otrzymanie
+ * \brief Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu. Przed rozpoczęciem pracy generowana jest tablica
+ * zawierająca 10 losowych cyfr (0-9) przy użyciu funkcji generateRandArray(). W głównej pętli zadanie oczekuje na otrzymanie
  * kodu przycisku za pośrednictwem kolejki keypadQueue. Przy pierwszym uruchomieniu zadanie będzie oczekiwać na wciśnięcie
  * klawisza od 1 do 10 oznaczającego wybór poziomu trudności. Gdy gracz wybierze poziom trudności wówczas zadanie
  * rozpocznie grę, wysyłając pierwszą losową wygenerowaną liczbę, po czym będzie oczekiwać na wprowadzenie przez użytkownika
  * odpowiedniej wartości z klawiatury ...
+ * Porównanie wartości wprowadzonej z klawiatury oraz wartości znakjdującej się w wygenerowanej wcześniej tablicy odbywa się
+ * poprzez porównanie zmiennej buffer z odpowiednią komórka tablicy randomlyGeneratedArray w instrukcji warunkowej.
+ * Gra może skończyć się rezultatem przegranym gdy wprowadzona wartość nie będzie spełniała warunku, wtedy do kolejki dispQueue
+ * zostaje wysłany znak "L" widziany jako kod ascii. W przypadku wygranej, czyli gdy zmienna step zrówna się z zmienną diff do kolejki
+ *  dispQueue, zostaje wysłany znak "W". O stanie gry informuje zmienna progres.
+ *
+ *
+ * uint8_t buffer - Zmienna buforowa przechowywująca ostatni znak pobrany z kolajki
+ *
+ * char *code - Zmienna wskaźnikowa przechowywująca ostatni znak pobrany z kolejki w formacie znakowym
+ *
+ * char codeToUser - Ciąg znaków wyświetlany kierowany na sterownik wyświetlacza
+ *
+ * uint8_t step - Aktualny poziom, na którym znajduje się gracz (długość ciągu do zapamiętania)
+ *
+ * uint8_t stage - Iteracja po elementach wygenerowanej tablicy podczas porównania
+ *
+ * uint8_t progress - Stan gry: 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select
+ *
+ * uint8_t diff - Poziom trudności domyślnie ustawiony na 5
  */
 void mainLOGIC( void * pvParameters )
 {
@@ -228,8 +248,8 @@ void mainLOGIC( void * pvParameters )
 	char codeToUser[10] = {0};
 	uint8_t step = 0;
 	uint8_t stage = 0;
-	uint8_t progres = 4; // 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select
-	uint8_t diff = 5; // Poziom trudności domyślnie ustawiony na 5
+	uint8_t progres = 4;
+	uint8_t diff = 5;
 
 	uint8_t randomlyGeneratedArray[10];
 	int *pointerTorandomlyGeneratedArray;
