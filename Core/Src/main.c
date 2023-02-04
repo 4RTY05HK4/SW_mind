@@ -16,11 +16,11 @@
   ******************************************************************************
   */
 
-/*! \mainpage Mind game
+/** \mainpage Mind game
  *
  * \section intro Założenia
  *
- * Projekt zakłada stworzenie gry w oparciu o mikrokontroler wspierający system FreeRTOS, oraz peryfiera w postaci
+ * Projekt zakłada stworzenie gry w oparciu o mikrokontroler STM32 wspierający system FreeRTOS, oraz peryfiera w postaci
  * klawiatury matrycowej i wyświetlacz matrycowy LED.
  *
  * \section rules Zasady
@@ -108,30 +108,25 @@ void MX_FREERTOS_Init(void);
  * przycisku konwertowany jest na wartość, która zapisywana jest do kolejki keypadQueue, pod warunkiem
  * że ustawiony jest semafor readKeypadSemaphore.
  */
-void KeyLOGIC( void * pvParameters )
-{
+void KeyLOGIC( void * pvParameters ){
+
 	uint8_t keycode = 0;
 	uint16_t counter = 10000;
 	uint8_t flag = 0;
 	char *code = '0';
 
-	while(1)
-	{
+	while(1){
 		keycode = decode();
 
-		if (keycode > 0 && keycode < 11 && flag != 0)
-		{
+		if (keycode > 0 && keycode < 11 && flag != 0){
 			--keycode;
-			if( xSemaphoreTake( readKeypadSemaphore, ( TickType_t ) 10 ) == pdTRUE )
-			{
+			if( xSemaphoreTake( readKeypadSemaphore, ( TickType_t ) 10 ) == pdTRUE ){
 				if(xQueueSendToBack(keypadQueue, (void*)&keycode, (TickType_t)10) == pdPASS){}
 			}
 		flag = 0;
 		}
-		else if(!keycode && !flag)
-		{
-			if(!counter)
-			{
+		else if(!keycode && !flag){
+			if(!counter){
 				counter = 10000;
 				flag = 1;
 			}
@@ -142,26 +137,22 @@ void KeyLOGIC( void * pvParameters )
 
 /**
  * \brief Funkcja zadania systemu FreeRTOS obsługująca wyświetlacz matrycowy LED.
- * Funkcja odczytuje dane otrzymane z kolejki dispQueue i wyświetla je przy użyciu funkcji Disp_Write_Word()
- * z biblioteki M8_Disp. W przypadku otrzymania wartości odpowiadającej literom "l' lub "w"
+ * \details Funkcja odczytuje dane otrzymane z kolejki dispQueue i wyświetla je przy użyciu funkcji Disp_Write_Word()
+ * z biblioteki M8_Disp. W przypadku otrzymania wartości odpowiadającej literom "l" lub "w",
  * funkcja wyświetla odpowiednie słowa komunikujące przegraną lub wygraną.
  */
-void DispLOGIC( void * pvParameters )
-{
+void DispLOGIC( void * pvParameters ){
+
 	uint8_t digits[10] = {0};
 	uint8_t buffer = 0;
 	char *code =  '0';
 	uint8_t counter = 0;
 	uint8_t signs = 0;
 
-	while(1)
-	{
-		if(dispQueue != NULL)
-		{
-			if(xQueueReceive(dispQueue, &(buffer), (TickType_t)10) == pdPASS )
-			{
-				switch(buffer)
-				{
+	while(1){
+		if(dispQueue != NULL){
+			if(xQueueReceive(dispQueue, &(buffer), (TickType_t)10) == pdPASS ){
+				switch(buffer){
 
 					case 108:
 						Disp_Clear(Conf1);
@@ -182,8 +173,7 @@ void DispLOGIC( void * pvParameters )
 						sprintf(&code, "%1d%1d%1d%1d", digits[counter], digits[counter-1], digits[counter-2], digits[counter-3]);
 						Disp_Write_Word(Conf1, &code, counter+1);
 						counter++;
-						if(counter > signs)
-						{
+						if(counter > signs){
 							signs++;
 							counter = 0;
 						}
@@ -195,12 +185,12 @@ void DispLOGIC( void * pvParameters )
 }
 
 /**
- * \brief Funkcja generująca tablicę 10 losowych liczb. Do generacji użyto przetwornika ADC.
- * Odczytuje on szumy z wiszącego wyprowadzenia mikrokontrolera, które następnie zamieniane są na liczby
- * z zakresu od 1 do 10.
+ * \brief Funkcja generująca tablicę 10 losowych liczb.
+ * \details W celu wygenerowania liczb losowychużyto przetwornika ADC. Odczytuje on szumy z wiszącego wyprowadzenia
+ * mikrokontrolera, które następnie zamieniane są na liczby.
+ * z zakresu od 0 do 9.
  */
-int * generateRandArray()
-{
+int * generateRandArray(){
 	char *code = '0';
 	static int tab[10];
 
@@ -214,35 +204,37 @@ int * generateRandArray()
 }
 
 /**
- * \brief Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu. Przed rozpoczęciem pracy generowana jest tablica
+ * \brief Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu.
+ * \details Przed rozpoczęciem rozgrywki, generowana jest tablica
  * zawierająca 10 losowych cyfr (0-9) przy użyciu funkcji generateRandArray(). W głównej pętli zadanie oczekuje na otrzymanie
  * kodu przycisku za pośrednictwem kolejki keypadQueue. Przy pierwszym uruchomieniu zadanie będzie oczekiwać na wciśnięcie
  * klawisza od 1 do 10 oznaczającego wybór poziomu trudności. Gdy gracz wybierze poziom trudności wówczas zadanie
  * rozpocznie grę, wysyłając pierwszą losową wygenerowaną liczbę, po czym będzie oczekiwać na wprowadzenie przez użytkownika
- * odpowiedniej wartości z klawiatury ...
- * Porównanie wartości wprowadzonej z klawiatury oraz wartości znakjdującej się w wygenerowanej wcześniej tablicy odbywa się
+ * odpowiedniej wartości z klawiatury.
+ * Porównanie wartości wprowadzonej z klawiatury oraz wartości znajdującej się w wygenerowanej wcześniej tablicy odbywa się
  * poprzez porównanie zmiennej buffer z odpowiednią komórka tablicy randomlyGeneratedArray w instrukcji warunkowej.
+ * Po odebraniu danej z kolejki i jej przetworzeniu następuje oddanie semafora readKeypadSemaphore, aby gracz mógł wprowdzać kolejne cyfry.
  * Gra może skończyć się rezultatem przegranym gdy wprowadzona wartość nie będzie spełniała warunku, wtedy do kolejki dispQueue
- * zostaje wysłany znak "L" widziany jako kod ascii. W przypadku wygranej, czyli gdy zmienna step zrówna się z zmienną diff do kolejki
- *  dispQueue, zostaje wysłany znak "W". O stanie gry informuje zmienna progres.
+ * zostaje wysłany znak "l", widziany jako kod ASCII. W przypadku wygranej, czyli gdy zmienna step zrówna się z zmienną diff, do kolejki
+ *  dispQueue, zostaje wysłany znak "w". O stanie gry informuje zmienna progres.
+ * Ciąg znaków, jaki ma zostać wysłany do sterownika jest poddawany konkatenacji przy pomocy strcat z kolejnymi wartościami
+ * z wygenerowanej tablicy po zakończeniu każdego etapu gry.
  *
+ * uint8_t buffer - Zmienna buforowa przechowywująca ostatni znak pobrany z kolejki.
  *
- * uint8_t buffer - Zmienna buforowa przechowywująca ostatni znak pobrany z kolajki
+ * char *code - Zmienna wskaźnikowa przechowywująca ostatni znak pobrany z kolejki w formacie znakowym.
  *
- * char *code - Zmienna wskaźnikowa przechowywująca ostatni znak pobrany z kolejki w formacie znakowym
+ * char codeToUser - Ciąg znaków wyświetlany kierowany na sterownik wyświetlacza.
  *
- * char codeToUser - Ciąg znaków wyświetlany kierowany na sterownik wyświetlacza
+ * uint8_t step - Aktualny poziom, na którym znajduje się gracz (długość ciągu do zapamiętania).
  *
- * uint8_t step - Aktualny poziom, na którym znajduje się gracz (długość ciągu do zapamiętania)
+ * uint8_t stage - Iteracja po elementach wygenerowanej tablicy podczas porównania.
  *
- * uint8_t stage - Iteracja po elementach wygenerowanej tablicy podczas porównania
+ * uint8_t progress - Stan gry: 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select.
  *
- * uint8_t progress - Stan gry: 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select
- *
- * uint8_t diff - Poziom trudności domyślnie ustawiony na 5
+ * uint8_t diff - Poziom trudności domyślnie ustawiony na 5.
  */
-void mainLOGIC( void * pvParameters )
-{
+void mainLOGIC( void * pvParameters ){
 	uint8_t buffer = 0;
 	char *code = '0';
 	char codeToUser[10] = {0};
@@ -259,12 +251,9 @@ void mainLOGIC( void * pvParameters )
 		randomlyGeneratedArray[i] = *(pointerTorandomlyGeneratedArray+i);
 	}
 
-	while(1)
-	{
-		if(keypadQueue != NULL)
-		{
-			if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS )
-			{
+	while(1){
+		if(keypadQueue != NULL){
+			if(xQueueReceive(keypadQueue, &(buffer), (TickType_t)10) == pdPASS ){
 				if(progres == 4) {
 					diff = buffer + 1;
 					progres = 1;
@@ -272,14 +261,11 @@ void mainLOGIC( void * pvParameters )
 					sprintf(&codeToUser, "%1d", randomlyGeneratedArray[0]);
 					Disp_Write_Word_Shift(Conf1, &codeToUser, 1);
 				}
-				else if(progres == 1 && (buffer == randomlyGeneratedArray[stage]) && (step <= diff-1))
-				{
-					if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS)
-					{
+				else if(progres == 1 && (buffer == randomlyGeneratedArray[stage]) && (step <= diff-1)){
+					if(xQueueSendToBack(dispQueue, (void*)&buffer, (TickType_t)10) == pdPASS){
 						stage++;
 						xSemaphoreGive( readKeypadSemaphore );
-						if(stage == step+1)
-						{
+						if(stage == step+1){
 							step++;
 							if(step <= diff-1){
 								vTaskDelay(500);
@@ -296,17 +282,13 @@ void mainLOGIC( void * pvParameters )
 			}
 		}
 		if(step >= diff) progres = 2;
-		if(progres == 2)
-		{
-			if(xQueueSendToBack(dispQueue, (void*)"w", (TickType_t)10) == pdPASS)
-			{
+		if(progres == 2){
+			if(xQueueSendToBack(dispQueue, (void*)"w", (TickType_t)10) == pdPASS){
 				xSemaphoreGive( readKeypadSemaphore );
 			}
 		}
-		else if(progres == 0)
-		{
-			if(xQueueSendToBack(dispQueue, (void*)"l", (TickType_t)10) == pdPASS)
-			{
+		else if(progres == 0){
+			if(xQueueSendToBack(dispQueue, (void*)"l", (TickType_t)10) == pdPASS){
 				xSemaphoreGive( readKeypadSemaphore );
 			}
 		}
@@ -316,7 +298,7 @@ void mainLOGIC( void * pvParameters )
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
+  * @brief  Początek aplikacji.
   * @retval int
   */
 int main(void)
@@ -353,38 +335,38 @@ int main(void)
   Disp_Init(Conf1, 0x01);
 
   xTaskCreate(
-		  	  	  	  mainLOGIC,      	/* Function that implements the task. */
-                      "MAIN",          	/* Text name for the task. */
-                      1000,      		/* Stack size in words, not bytes. */
-                      NULL,    			/* Parameter passed into the task. */
-					  1,				/* Priority at which the task is created. */
-                      NULL );     		/* Used to pass out the created task's handle. */
+		  	  	  	  mainLOGIC,      	// Funkcja realizująca zadania
+                      "MAIN",          	// Nazwa zadania
+                      1000,      		// Rozmiar stosu przeznaczony na zadanie
+                      NULL,    			// Parametr przekazany do zadania
+					  1,				// Priorytet zadania
+                      NULL );     		// Używany do przekazania uchwytu zadania
 
   xTaskCreate(
-		  	  	  	  KeyLOGIC,       	/* Function that implements the task. */
-                      "KEY",          	/* Text name for the task. */
-                      1000,      		/* Stack size in words, not bytes. */
-                      NULL,    			/* Parameter passed into the task. */
-                      1,				/* Priority at which the task is created. */
-                      NULL );      		/* Used to pass out the created task's handle. */
+		  	  	  	  KeyLOGIC,       	// Funkcja realizująca zadania
+                      "KEY",          	// Nazwa zadania
+                      1000,      		// Rozmiar stosu przeznaczony na zadanie
+                      NULL,    			// Parametr przekazany do zadania
+                      1,				// Priorytet zadania
+                      NULL );      		// Używany do przekazania uchwytu zadania
 
   xTaskCreate(
-		  	  	  	  DispLOGIC,       	/* Function that implements the task. */
-                      "DISP",          	/* Text name for the task. */
-                      1000,      		/* Stack size in words, not bytes. */
-                      NULL,    			/* Parameter passed into the task. */
-                      1,				/* Priority at which the task is created. */
-					  NULL );      		/* Used to pass out the created task's handle. */
+		  	  	  	  DispLOGIC,       	// Funkcja realizująca zadania
+                      "DISP",           // Nazwa zadania
+                      1000,      		// Rozmiar stosu przeznaczony na zadanie
+                      NULL,    			// Parametr przekazany do zadania
+                      1,				// Priorytet zadania
+					  NULL );      		// Używany do przekazania uchwytu zadania
 
 
 
 
-  keypadQueue = xQueueCreate( 10, sizeof(uint8_t)); /*! Utworzenie kolejki 10 elementowej dla przesyłu kodów klawiszy. */
+  keypadQueue = xQueueCreate( 10, sizeof(uint8_t)); // Utworzenie kolejki 10 elementowej dla przesyłu kodów klawiszy.
   if(keypadQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
-  dispQueue = xQueueCreate( 10, sizeof(uint8_t)); /*! Utworzenie kolejki 10 elementowej dla przesyłu znaków do wyświetlenia */
-  if(dispQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10); /*! */
+  dispQueue = xQueueCreate( 10, sizeof(uint8_t)); // Utworzenie kolejki 10 elementowej dla przesyłu znaków do wyświetlenia
+  if(dispQueue == 0) HAL_UART_Transmit(&huart2, "Err_queue", 9, 10);
 
-  readKeypadSemaphore = xSemaphoreCreateBinary(); /*! Utworzenie semafora zezwalającego na zapis kodu klawisza do kolejki*/
+  readKeypadSemaphore = xSemaphoreCreateBinary(); // Utworzenie semafora zezwalającego na zapis kodu klawisza do kolejki
   xSemaphoreGive( readKeypadSemaphore );
 
   Disp_Clear(Conf1);
@@ -410,7 +392,7 @@ int main(void)
 }
 
 /**
-  * @brief System Clock Configuration
+  * @brief Konfiguracja zegara systemowego.
   * @retval None
   */
 void SystemClock_Config(void)
@@ -461,7 +443,7 @@ void SystemClock_Config(void)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
+  * @brief  Funkcja wykonywana podczas błędu systemu.
   * @retval None
   */
 void Error_Handler(void)

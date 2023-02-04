@@ -1,8 +1,6 @@
 /**
  * M8_Disp.h
  *
- *  Created on: Dec 2, 2022
- *      Author: Kamil Barański
  *  \brief    Biblioteka Obslugi wyswietlacza
  *  Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8
  *
@@ -39,7 +37,7 @@ struct Conf{
 /**
  * \brief Funkcja wysyłająca dane z wykorzystaniem SPI
  * \details Funkcja wysyłająca pod wskazany adres daną, która ma zostać wysłana. Nie uwzględa przy tym odpowiedniego ustawienia sygnalu CS
- * \param[in]   C		Struktura konfiguracyjna
+ * \param[in]   C			Struktura konfiguracyjna
  * \param[in]	address		adres pod który ma zostać wysłana dana
  * \param[in]	Data		Dana, która ma zostać wysłana
  */

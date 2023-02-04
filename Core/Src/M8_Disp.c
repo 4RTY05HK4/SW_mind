@@ -1,8 +1,6 @@
 /*
  * M8_Disp.c
  *
- *  Created on: Dec 2, 2022
- *      Author: Kamil Barański
  */
 #include "M8_Disp.h"
 
@@ -105,15 +103,13 @@ const uint8_t digits[][8]={
 
 const uint8_t sep[8]={0x00,0x00,0x40,0x00,0x00,0x40,0x00,0x00};
 
-void SPI_Send(struct Conf C,uint8_t address, uint8_t D)
-{
+void SPI_Send(struct Conf C,uint8_t address, uint8_t D){
 	HAL_SPI_Transmit(&C.hspi, &address, 1, 100);
-	HAL_SPI_Transmit(&C.hspi, &D, 1, 100); //  write data
+	HAL_SPI_Transmit(&C.hspi, &D, 1, 100); //  wysłanie danych
 }
 
-void Disp_Init(struct Conf C,uint8_t brightness)
-{ 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	SPI_Send(C,0x0c, 0x00);       //  power down =0，normal mode = 1
+void Disp_Init(struct Conf C,uint8_t brightness){ 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
+	SPI_Send(C,0x0c, 0x00);     //  wył =0，wł = 1
 	SPI_Send(C,0x0c, 0x00);
 	SPI_Send(C,0x0c, 0x00);
 	SPI_Send(C,0x0c, 0x00);
@@ -121,61 +117,57 @@ void Disp_Init(struct Conf C,uint8_t brightness)
 
 
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	SPI_Send(C,0x0f, 0x00);//  no test display
-	SPI_Send(C,0x0f, 0x00);//  no test display
-	SPI_Send(C,0x0f, 0x00);//  no test display
-	SPI_Send(C,0x0f, 0x00);//  no test display
+	SPI_Send(C,0x0f, 0x00);		//  test wyświetlacza
+	SPI_Send(C,0x0f, 0x00);
+	SPI_Send(C,0x0f, 0x00);
+	SPI_Send(C,0x0f, 0x00);
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);
 
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	SPI_Send(C,0x09, 0x00);       //  no decoding
-	SPI_Send(C,0x09, 0x00);       //  no decoding
-	SPI_Send(C,0x09, 0x00);       //  no decoding
-	SPI_Send(C,0x09, 0x00);       //  no decoding
+	SPI_Send(C,0x09, 0x00);       //  dekodowanie
+	SPI_Send(C,0x09, 0x00);
+	SPI_Send(C,0x09, 0x00);
+	SPI_Send(C,0x09, 0x00);
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);
 
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	SPI_Send(C,0x0a, brightness);       //  brightness intensity
-	SPI_Send(C,0x0a, brightness);       //  brightness intensity
-	SPI_Send(C,0x0a, brightness);       //  brightness intensity
-	SPI_Send(C,0x0a, brightness);       //  brightness intensity
+	SPI_Send(C,0x0a, brightness);       //  jasność
+	SPI_Send(C,0x0a, brightness);
+	SPI_Send(C,0x0a, brightness);
+	SPI_Send(C,0x0a, brightness);
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);
 
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	SPI_Send(C,0x0b, 0x07);       //  scan limit = 8 LEDs
-	SPI_Send(C,0x0b, 0x07);       //  scan limit = 8 LEDs
-	SPI_Send(C,0x0b, 0x07);       //  scan limit = 8 LEDs
-	SPI_Send(C,0x0b, 0x07);       //  scan limit = 8 LEDs
+	SPI_Send(C,0x0b, 0x07);       //  scan limit = 8 LED
+	SPI_Send(C,0x0b, 0x07);
+	SPI_Send(C,0x0b, 0x07);
+	SPI_Send(C,0x0b, 0x07);
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);
 
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	SPI_Send(C,0x0c, 0x01);       //  power down =0，normal mode = 1
-	SPI_Send(C,0x0c, 0x01);       //  power down =0，normal mode = 1
-	SPI_Send(C,0x0c, 0x01);       //  power down =0，normal mode = 1
-	SPI_Send(C,0x0c, 0x01);       //  power down =0，normal mode = 1
+	SPI_Send(C,0x0c, 0x01);       //  wył =0，wł = 1
+	SPI_Send(C,0x0c, 0x01);
+	SPI_Send(C,0x0c, 0x01);
+	SPI_Send(C,0x0c, 0x01);
 	HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);
 
 
 }
 
-void Disp_Write(struct Conf C,uint8_t address, uint8_t *D) /**Write  col on all display*/
-{
+void Disp_Write(struct Conf C,uint8_t address, uint8_t *D) {/**Zapal wszystkie koplumny wyświetlacza*/
 
 
 HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
-	for (uint8_t j=0;j<4;j++)
-	{
+	for (uint8_t j=0;j<4;j++){
 		SPI_Send(C,address,D[j]);
 	}
-HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);  // pull the CS HIGH
+HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_SET);  // CS w stanie wysokim
 
 }
 
-void Disp_Clear(struct Conf C)	/**Clear  Displays*/
-{
+void Disp_Clear(struct Conf C)	{ // Czyszczenie wyświetlacza
 
-	for(int i=1;i<=8;i++)
-			{
+	for(int i=1;i<=8;i++){
 			HAL_GPIO_WritePin(C.GPIOx, C.GPIO_Pin, GPIO_PIN_RESET);
 			SPI_Send(C,i,0x00);
 			SPI_Send(C,i,0x00);
@@ -186,68 +178,53 @@ void Disp_Clear(struct Conf C)	/**Clear  Displays*/
 
 }
 
-void Disp_Write_Word(struct Conf C,char *D, uint8_t size)
-{
+void Disp_Write_Word(struct Conf C,char *D, uint8_t size) { // Wyświetlanie ciągu stojącego
 	uint8_t data[4];
-	for (uint8_t i=0;i<8;i++)//przepisanie danych z pamięci na poszczególne wartości liczbowe do wyświetlenia
-		{
-			for (uint8_t j=0;j<4;j++)
-			{
+	for (uint8_t i=0;i<8;i++){
+			for (uint8_t j=0;j<4;j++){
 				if(j>size-1) data[j] = (digits[0][i]);
 				else data[j] = (digits[D[j]-32][i]);
 			}
-
 			Disp_Write(C,i+1,data);
 		}
 }
 
-void Disp_Write_Word_Shift(struct Conf C,char *D,uint8_t size)
-{
+void Disp_Write_Word_Shift(struct Conf C,char *D,uint8_t size) { // Wyświetlanie ciągu przesuwnego
 	size +=4;
 	uint8_t dataout[4];
 	uint16_t datam[size][8];
 	uint8_t help=0;
 
-	for (uint8_t i=0;i<8;i++)
-			{
-				for (uint8_t j=0;j<size;j++)
-				{
+	for (uint8_t i=0;i<8;i++){
+				for (uint8_t j=0;j<size;j++){
 					if(j<4) datam[j][i] = (digits[0][i]);
 					else datam[j][i] = (digits[D[j-4]-32][i]);
 				}
 			}
 
 
-	for(uint8_t x=0;x<size;x++)
-	{
-		for (uint8_t i=0;i<8;i++)
-						{
+	for(uint8_t x=0;x<size;x++){
+		for (uint8_t i=0;i<8;i++){
 
-				for (uint8_t j=0;j<8;j++)
-							{
-					for (uint8_t k=0;k<size;k++)
-					{
+				for (uint8_t j=0;j<8;j++){
+					for (uint8_t k=0;k<size;k++){
 						datam[k][j]=datam[k][j]<<1;
 					}
-							if (datam[1][j]>255)
-							{
+							if (datam[1][j]>255){
 								datam[1][j]=datam[1][j]-256;
 								datam[0][j]++;
 							}
 
-							if (datam[2][j]>255)
-							{
+							if (datam[2][j]>255){
 								datam[2][j]=datam[2][j]-256;
 								datam[1][j]++;
 							}
 
-							if (datam[3][j]>255)
-							{
+							if (datam[3][j]>255){
 								datam[3][j]=datam[3][j]-256;
 								datam[2][j]++;
 							}
-							if (datam[4][j]>255)
-							{
+							if (datam[4][j]>255){
 								datam[4][j]=datam[4][j]-256;
 								datam[3][j]++;
 							}
@@ -260,11 +237,10 @@ void Disp_Write_Word_Shift(struct Conf C,char *D,uint8_t size)
 							}
 		vTaskDelay(100);
 						}
-if(5+help<size)
-{	for (uint8_t i=0;i<8;i++)
-				{
-						datam[4][i] = (digits[D[1+help]-32][i]);
-				}
+if(5+help<size){
+	for (uint8_t i=0;i<8;i++){
+		datam[4][i] = (digits[D[1+help]-32][i]);
+	}
 		help++;
 }
 
@@ -273,16 +249,12 @@ if(5+help<size)
 
 }
 
-void Disp_Write_Time(struct Conf C,char *D)
-	{
+void Disp_Write_Time(struct Conf C,char *D) { // Wyświetlanie czasu
 		uint8_t data[4];
-		for (uint8_t i=0;i<8;i++)
-			{
-				for (uint8_t j=0;j<4;j++)
-				{
+		for (uint8_t i=0;i<8;i++){
+				for (uint8_t j=0;j<4;j++){
 					data[j] = (digits[D[j]-32][i]);
-					if(j==2)
-					{
+					if(j==2){
 						data[j]=data[j]+sep[i];
 					}
 				}

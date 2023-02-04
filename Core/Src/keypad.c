@@ -1,8 +1,6 @@
 /*
  * keypad.c
  *
- *  Created on: Jan 11, 2023
- *      Author: ThinkPad-X1
  */
 
 #include "keypad.h"
@@ -11,12 +9,10 @@ volatile uint8_t wyj = 0b00000001;
 volatile uint32_t counter = 0;
 volatile uint8_t wej = 0;
 
-uint8_t scanRows(){
+uint8_t scanRows(){ // Skanowanie klawiatury
 
-	if(wej == 0)
-	{
-	        if(counter == 10000)
-	        {
+	if(wej == 0){
+	        if(counter == 10000){
 	            counter = 0;
 	            wyj = wyj * 2;
 	            if(wyj > 8)
@@ -27,7 +23,7 @@ uint8_t scanRows(){
 	        counter = counter + 1;
 	}
 
-	switch(wyj) {
+	switch(wyj){
 	  case 1:
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_SET);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
@@ -62,7 +58,7 @@ uint8_t scanRows(){
 	return wyj;
 }
 
-uint8_t readCols(){
+uint8_t readCols(){ //Odczyt z Klawiatury
 
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2)) {
 		wej = 1;
@@ -84,15 +80,14 @@ uint8_t readCols(){
 	return 0;
 }
 
-uint8_t decode(){
+uint8_t decode(){ //Dekodowanie stanów
 	scanRows();
 	uint8_t cols = readCols();
 	uint8_t rows = wyj;
 	uint8_t rejMS = 0;
 	uint8_t rejLS = 0;
 
-	if(cols != 0)
-	{
+	if(cols != 0){
 	        switch(rows){
 				case 1 :
 					rejMS = 0b0000;
