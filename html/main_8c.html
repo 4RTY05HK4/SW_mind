@@ -1,0 +1,428 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.6"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MIND game: Dokumentacja pliku Core/Src/main.c</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">MIND game
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.9.6 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Szukaj');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Wczytywanie...</div>
+<div class="SRStatus" id="Searching">Szukanie...</div>
+<div class="SRStatus" id="NoMatches">Brak dopasowań</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_c6310732a22f63c0c2fc5595561e68f1.html">Core</a></li><li class="navelem"><a class="el" href="dir_b596f468b52957496e4f78b80e029268.html">Src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funkcje</a> &#124;
+<a href="#var-members">Zmienne</a>  </div>
+  <div class="headertitle"><div class="title">Dokumentacja pliku main.c</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>: Main program body  
+<a href="#details">Więcej...</a></p>
+<div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="cmsis__os_8h_source.html">cmsis_os.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="adc_8h_source.html">adc.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="spi_8h_source.html">spi.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="usart_8h_source.html">usart.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="gpio_8h_source.html">gpio.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_m8___disp_8h_source.html">M8_Disp.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="queue_8h_source.html">queue.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="semphr_8h_source.html">semphr.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="keypad_8h_source.html">keypad.h</a>&quot;</code><br />
+</div>
+<p><a href="main_8c_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:a70af21c671abfcc773614a9a4f63d920"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a70af21c671abfcc773614a9a4f63d920">SystemClock_Config</a> (void)</td></tr>
+<tr class="memdesc:a70af21c671abfcc773614a9a4f63d920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Konfiguracja zegara systemowego.  <br /></td></tr>
+<tr class="separator:a70af21c671abfcc773614a9a4f63d920"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abade755e13d07c10889ae83143656158"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#abade755e13d07c10889ae83143656158">MX_FREERTOS_Init</a> (void)</td></tr>
+<tr class="memdesc:abade755e13d07c10889ae83143656158"><td class="mdescLeft">&#160;</td><td class="mdescRight">FreeRTOS initialization.  <br /></td></tr>
+<tr class="separator:abade755e13d07c10889ae83143656158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f21efa3994be804bcc1413ec59acb85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a5f21efa3994be804bcc1413ec59acb85">KeyLOGIC</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:a5f21efa3994be804bcc1413ec59acb85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja zadania systemu FreeRTOS obsługująca odczyt z klawiatury matrycowej. Funkcja <a class="el" href="keypad_8c.html#a19566e886881303a22f4a84bd125f49d" title="Dekodowanie stanów.">decode()</a> zwraca kod (liczbę od 1 do 16) wciśniętego przycisku. Zadanie sprawdza kod przycisku, ponieważ ze względu na charakter projektu używane jest tylko 10 pierwszych klawiszy, a następnie kod przycisku konwertowany jest na wartość, która zapisywana jest do kolejki keypadQueue, pod warunkiem że ustawiony jest semafor readKeypadSemaphore.  <br /></td></tr>
+<tr class="separator:a5f21efa3994be804bcc1413ec59acb85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b2418c17207c0f96d20e1b043a0ede9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a3b2418c17207c0f96d20e1b043a0ede9">DispLOGIC</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:a3b2418c17207c0f96d20e1b043a0ede9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja zadania systemu FreeRTOS obsługująca wyświetlacz matrycowy LED.  <br /></td></tr>
+<tr class="separator:a3b2418c17207c0f96d20e1b043a0ede9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab87defcbf6a8e4955b5c4bdfb3db1e7c"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ab87defcbf6a8e4955b5c4bdfb3db1e7c">generateRandArray</a> ()</td></tr>
+<tr class="memdesc:ab87defcbf6a8e4955b5c4bdfb3db1e7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja generująca tablicę 10 losowych liczb.  <br /></td></tr>
+<tr class="separator:ab87defcbf6a8e4955b5c4bdfb3db1e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade3f16492d976a456438e6bf54f2e9ba"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ade3f16492d976a456438e6bf54f2e9ba">mainLOGIC</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:ade3f16492d976a456438e6bf54f2e9ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu.  <br /></td></tr>
+<tr class="separator:ade3f16492d976a456438e6bf54f2e9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
+<tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1730ffe1e560465665eb47d9264826f9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a1730ffe1e560465665eb47d9264826f9">Error_Handler</a> (void)</td></tr>
+<tr class="memdesc:a1730ffe1e560465665eb47d9264826f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja wykonywana podczas błędu systemu.  <br /></td></tr>
+<tr class="separator:a1730ffe1e560465665eb47d9264826f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Zmienne</h2></td></tr>
+<tr class="memitem:ac4f7e76e3e9b46d4e575e8ca048c906f"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac4f7e76e3e9b46d4e575e8ca048c906f">Conf1</a></td></tr>
+<tr class="separator:ac4f7e76e3e9b46d4e575e8ca048c906f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7166f2df6e5c34c612eb7a9343640e5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="queue_8h.html#a57349603001f8ddf51c888c49e2804d7">QueueHandle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a7166f2df6e5c34c612eb7a9343640e5b">keypadQueue</a> = NULL</td></tr>
+<tr class="separator:a7166f2df6e5c34c612eb7a9343640e5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a237e2100dfc58232b8c953c338b686e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="queue_8h.html#a57349603001f8ddf51c888c49e2804d7">QueueHandle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a237e2100dfc58232b8c953c338b686e2">dispQueue</a> = NULL</td></tr>
+<tr class="separator:a237e2100dfc58232b8c953c338b686e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac26ee786512fe4ade68202327355f9ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="semphr_8h.html#ad88c6df4a04beedeac782918c8a332f5">SemaphoreHandle_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ac26ee786512fe4ade68202327355f9ca">readKeypadSemaphore</a></td></tr>
+<tr class="separator:ac26ee786512fe4ade68202327355f9ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Opis szczegółowy</h2>
+<div class="textblock"><p>: Main program body </p>
+<dl class="section attention"><dt>Uwaga</dt><dd></dd></dl>
+<p>Copyright (c) 2022 STMicroelectronics. All rights reserved.</p>
+<p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-IS. </p>
+
+<p class="definition">Definicja w pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+</div><h2 class="groupheader">Dokumentacja funkcji</h2>
+<a id="a3b2418c17207c0f96d20e1b043a0ede9" name="a3b2418c17207c0f96d20e1b043a0ede9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b2418c17207c0f96d20e1b043a0ede9">&#9670;&#160;</a></span>DispLOGIC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void DispLOGIC </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pvParameters</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja zadania systemu FreeRTOS obsługująca wyświetlacz matrycowy LED. </p>
+<p>Funkcja odczytuje dane otrzymane z kolejki dispQueue i wyświetla je przy użyciu funkcji <a class="el" href="_m8___disp_8c.html#a4151110e4475806441179a1cf4579edf" title="Funkcja wyświetlająca 4 znaki(słowo)">Disp_Write_Word()</a> z biblioteki M8_Disp. W przypadku otrzymania wartości odpowiadającej literom "l" lub "w", funkcja wyświetla odpowiednie słowa komunikujące przegraną lub wygraną. </p>
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00149">149</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a1730ffe1e560465665eb47d9264826f9" name="a1730ffe1e560465665eb47d9264826f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1730ffe1e560465665eb47d9264826f9">&#9670;&#160;</a></span>Error_Handler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Error_Handler </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja wykonywana podczas błędu systemu. </p>
+<dl class="retval"><dt>Zwracane wartości</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00450">450</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="ab87defcbf6a8e4955b5c4bdfb3db1e7c" name="ab87defcbf6a8e4955b5c4bdfb3db1e7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab87defcbf6a8e4955b5c4bdfb3db1e7c">&#9670;&#160;</a></span>generateRandArray()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int * generateRandArray </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja generująca tablicę 10 losowych liczb. </p>
+<p>W celu wygenerowania liczb losowychużyto przetwornika ADC. Odczytuje on szumy z wiszącego wyprowadzenia mikrokontrolera, które następnie zamieniane są na liczby. z zakresu od 0 do 9. </p>
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00198">198</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a5f21efa3994be804bcc1413ec59acb85" name="a5f21efa3994be804bcc1413ec59acb85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f21efa3994be804bcc1413ec59acb85">&#9670;&#160;</a></span>KeyLOGIC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void KeyLOGIC </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pvParameters</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja zadania systemu FreeRTOS obsługująca odczyt z klawiatury matrycowej. Funkcja <a class="el" href="keypad_8c.html#a19566e886881303a22f4a84bd125f49d" title="Dekodowanie stanów.">decode()</a> zwraca kod (liczbę od 1 do 16) wciśniętego przycisku. Zadanie sprawdza kod przycisku, ponieważ ze względu na charakter projektu używane jest tylko 10 pierwszych klawiszy, a następnie kod przycisku konwertowany jest na wartość, która zapisywana jest do kolejki keypadQueue, pod warunkiem że ustawiony jest semafor readKeypadSemaphore. </p>
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00116">116</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a840291bc02cba5474a4cb46a9b9566fe" name="a840291bc02cba5474a4cb46a9b9566fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a840291bc02cba5474a4cb46a9b9566fe">&#9670;&#160;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00305">305</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="ade3f16492d976a456438e6bf54f2e9ba" name="ade3f16492d976a456438e6bf54f2e9ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade3f16492d976a456438e6bf54f2e9ba">&#9670;&#160;</a></span>mainLOGIC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mainLOGIC </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pvParameters</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja zadania systemu FreeRTOS obsługująca całą logikę programu. </p>
+<p>Przed rozpoczęciem rozgrywki, generowana jest tablica zawierająca 10 losowych cyfr (0-9) przy użyciu funkcji <a class="el" href="main_8c.html#ab87defcbf6a8e4955b5c4bdfb3db1e7c" title="Funkcja generująca tablicę 10 losowych liczb.">generateRandArray()</a>. W głównej pętli zadanie oczekuje na otrzymanie kodu przycisku za pośrednictwem kolejki keypadQueue. Przy pierwszym uruchomieniu zadanie będzie oczekiwać na wciśnięcie klawisza od 1 do 10 oznaczającego wybór poziomu trudności. Gdy gracz wybierze poziom trudności wówczas zadanie rozpocznie grę, wysyłając pierwszą losową wygenerowaną liczbę, po czym będzie oczekiwać na wprowadzenie przez użytkownika odpowiedniej wartości z klawiatury. Porównanie wartości wprowadzonej z klawiatury oraz wartości znajdującej się w wygenerowanej wcześniej tablicy odbywa się poprzez porównanie zmiennej buffer z odpowiednią komórka tablicy randomlyGeneratedArray w instrukcji warunkowej. Po odebraniu danej z kolejki i jej przetworzeniu następuje oddanie semafora readKeypadSemaphore, aby gracz mógł wprowdzać kolejne cyfry. Gra może skończyć się rezultatem przegranym gdy wprowadzona wartość nie będzie spełniała warunku, wtedy do kolejki dispQueue zostaje wysłany znak "l", widziany jako kod ASCII. W przypadku wygranej, czyli gdy zmienna step zrówna się z zmienną diff, do kolejki dispQueue, zostaje wysłany znak "w". O stanie gry informuje zmienna progres. Ciąg znaków, jaki ma zostać wysłany do sterownika jest poddawany konkatenacji przy pomocy strcat z kolejnymi wartościami z wygenerowanej tablicy po zakończeniu każdego etapu gry.</p>
+<p>uint8_t buffer - Zmienna buforowa przechowywująca ostatni znak pobrany z kolejki.</p>
+<p>char *code - Zmienna wskaźnikowa przechowywująca ostatni znak pobrany z kolejki w formacie znakowym.</p>
+<p>char codeToUser - Ciąg znaków wyświetlany kierowany na sterownik wyświetlacza.</p>
+<p>uint8_t step - Aktualny poziom, na którym znajduje się gracz (długość ciągu do zapamiętania).</p>
+<p>uint8_t stage - Iteracja po elementach wygenerowanej tablicy podczas porównania.</p>
+<p>uint8_t progress - Stan gry: 0 - lose/ 1 - game in progress/ 2 - win/ 4 - diff select.</p>
+<p>uint8_t diff - Poziom trudności domyślnie ustawiony na 5. </p>
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00242">242</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="abade755e13d07c10889ae83143656158" name="abade755e13d07c10889ae83143656158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abade755e13d07c10889ae83143656158">&#9670;&#160;</a></span>MX_FREERTOS_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MX_FREERTOS_Init </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FreeRTOS initialization. </p>
+<dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Zwracane wartości</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>File Name : <a class="el" href="freertos_8c.html">freertos.c</a> Description : Code for freertos applications</p>
+<dl class="section attention"><dt>Uwaga</dt><dd></dd></dl>
+<p>Copyright (c) 2023 STMicroelectronics. All rights reserved.</p>
+<p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component. If no LICENSE file comes with this software, it is provided AS-IS.</p>
+
+<p class="definition">Definicja w linii <a class="el" href="freertos_8c_source.html#l00072">72</a> pliku <a class="el" href="freertos_8c_source.html">freertos.c</a>.</p>
+
+</div>
+</div>
+<a id="a70af21c671abfcc773614a9a4f63d920" name="a70af21c671abfcc773614a9a4f63d920"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70af21c671abfcc773614a9a4f63d920">&#9670;&#160;</a></span>SystemClock_Config()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SystemClock_Config </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Konfiguracja zegara systemowego. </p>
+<dl class="retval"><dt>Zwracane wartości</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">None</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Configure the main internal regulator output voltage</p>
+<p>Initializes the RCC Oscillators according to the specified parameters in the <a class="el" href="struct_r_c_c___osc_init_type_def.html" title="RCC Internal/External Oscillator (HSE, HSI, LSE and LSI) configuration structure definition.">RCC_OscInitTypeDef</a> structure.</p>
+<p>Initializes the CPU, AHB and APB buses clocks</p>
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00399">399</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Dokumentacja zmiennych</h2>
+<a id="ac4f7e76e3e9b46d4e575e8ca048c906f" name="ac4f7e76e3e9b46d4e575e8ca048c906f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4f7e76e3e9b46d4e575e8ca048c906f">&#9670;&#160;</a></span>Conf1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_conf.html">Conf</a> Conf1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00089">89</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a237e2100dfc58232b8c953c338b686e2" name="a237e2100dfc58232b8c953c338b686e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a237e2100dfc58232b8c953c338b686e2">&#9670;&#160;</a></span>dispQueue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="queue_8h.html#a57349603001f8ddf51c888c49e2804d7">QueueHandle_t</a> dispQueue = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00091">91</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="a7166f2df6e5c34c612eb7a9343640e5b" name="a7166f2df6e5c34c612eb7a9343640e5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7166f2df6e5c34c612eb7a9343640e5b">&#9670;&#160;</a></span>keypadQueue</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="queue_8h.html#a57349603001f8ddf51c888c49e2804d7">QueueHandle_t</a> keypadQueue = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00090">90</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+<a id="ac26ee786512fe4ade68202327355f9ca" name="ac26ee786512fe4ade68202327355f9ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac26ee786512fe4ade68202327355f9ca">&#9670;&#160;</a></span>readKeypadSemaphore</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="semphr_8h.html#ad88c6df4a04beedeac782918c8a332f5">SemaphoreHandle_t</a> readKeypadSemaphore</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definicja w linii <a class="el" href="main_8c_source.html#l00093">93</a> pliku <a class="el" href="main_8c_source.html">main.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano przez&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
+</small></address>
+</body>
+</html>

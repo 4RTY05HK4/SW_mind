@@ -44,6 +44,11 @@
  * \subsection keypad Klawiatura matrycowa
  * Obsługę klawiatury matrycowej realizuje zadanie KeyLOGIC() przy pomocy biblioteki keypad.h stworzonej na potrzebę projektu.
  *
+ * \section tasks Zadania
+ * Projekt został podzielony na 3 zadania: KeyLOGIC(), DispLOGIC() oraz mainLOGIC(), odpowiadające kolejno obsłudze klawiatury matrycowej,
+ * obsłudze wyświetlacza matrycowego LED oraz głównej logice programu.
+ *
+ *
  *
  *
  */
@@ -297,10 +302,6 @@ void mainLOGIC( void * pvParameters ){
 
 /* USER CODE END 0 */
 
-/**
-  * @brief  Początek aplikacji.
-  * @retval int
-  */
 int main(void)
 {
   /* USER CODE BEGIN 1 */

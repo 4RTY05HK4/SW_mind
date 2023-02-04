@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.6"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>MIND game: Dokumentacja pliku Core/Src/M8_Disp.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">MIND game
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.9.6 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Szukaj');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Wczytywanie...</div>
+<div class="SRStatus" id="Searching">Szukanie...</div>
+<div class="SRStatus" id="NoMatches">Brak dopasowań</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_c6310732a22f63c0c2fc5595561e68f1.html">Core</a></li><li class="navelem"><a class="el" href="dir_b596f468b52957496e4f78b80e029268.html">Src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Struktury danych</a> &#124;
+<a href="#func-members">Funkcje</a>  </div>
+  <div class="headertitle"><div class="title">Dokumentacja pliku M8_Disp.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="stm32f4xx__hal_8h_source.html">stm32f4xx_hal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="stm32f446xx_8h_source.html">stm32f446xx.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="stm32f4xx__hal__gpio_8h_source.html">stm32f4xx_hal_gpio.h</a>&quot;</code><br />
+</div>
+<p><a href="_m8___disp_8h_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Struktury danych</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_conf.html">Conf</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Biblioteka Obslugi wyswietlacza Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8.  <a href="struct_conf.html#details">Więcej...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:a7eec93801feb43736bb0b23b7dfb4333"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#a7eec93801feb43736bb0b23b7dfb4333">SPI_Send</a> (struct <a class="el" href="struct_conf.html">Conf</a> C, uint8_t address, uint8_t Data)</td></tr>
+<tr class="memdesc:a7eec93801feb43736bb0b23b7dfb4333"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja wysyłająca dane z wykorzystaniem SPI.  <br /></td></tr>
+<tr class="separator:a7eec93801feb43736bb0b23b7dfb4333"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a334c23d5fb66b1130d4840355f8b7d97"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#a334c23d5fb66b1130d4840355f8b7d97">Disp_Init</a> (struct <a class="el" href="struct_conf.html">Conf</a>, uint8_t brightness)</td></tr>
+<tr class="memdesc:a334c23d5fb66b1130d4840355f8b7d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja inicjalizująca wyświetlacz i ustawiająca jego jasność  <br /></td></tr>
+<tr class="separator:a334c23d5fb66b1130d4840355f8b7d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0271d71328424bd12304d89dd424d198"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#a0271d71328424bd12304d89dd424d198">Disp_Clear</a> (struct <a class="el" href="struct_conf.html">Conf</a> C)</td></tr>
+<tr class="memdesc:a0271d71328424bd12304d89dd424d198"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja czyszcząca wyświetlacz.  <br /></td></tr>
+<tr class="separator:a0271d71328424bd12304d89dd424d198"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3c919c1c6081fa9872b5771ff7bc912"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#ae3c919c1c6081fa9872b5771ff7bc912">Disp_Write</a> (struct <a class="el" href="struct_conf.html">Conf</a>, uint8_t address, uint8_t *Data)</td></tr>
+<tr class="memdesc:ae3c919c1c6081fa9872b5771ff7bc912"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja wyświetlająca rząd na 4 wyświetlaczach.  <br /></td></tr>
+<tr class="separator:ae3c919c1c6081fa9872b5771ff7bc912"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4151110e4475806441179a1cf4579edf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#a4151110e4475806441179a1cf4579edf">Disp_Write_Word</a> (struct <a class="el" href="struct_conf.html">Conf</a> C, char *D, uint8_t size)</td></tr>
+<tr class="memdesc:a4151110e4475806441179a1cf4579edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja wyświetlająca 4 znaki(słowo)  <br /></td></tr>
+<tr class="separator:a4151110e4475806441179a1cf4579edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0e47e90de0a60ccda05d53812457d3d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#ac0e47e90de0a60ccda05d53812457d3d">Disp_Write_Time</a> (struct <a class="el" href="struct_conf.html">Conf</a> C, char *D)</td></tr>
+<tr class="memdesc:ac0e47e90de0a60ccda05d53812457d3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja wyświetlająca czas.  <br /></td></tr>
+<tr class="separator:ac0e47e90de0a60ccda05d53812457d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69f5a72fc329f8ccc061a5d90894115"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_m8___disp_8h.html#ae69f5a72fc329f8ccc061a5d90894115">Disp_Write_Word_Shift</a> (struct <a class="el" href="struct_conf.html">Conf</a> C, char *D, uint8_t size)</td></tr>
+<tr class="memdesc:ae69f5a72fc329f8ccc061a5d90894115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funkcja wyświetlająca napis przesuwając go od prawej do lewej.  <br /></td></tr>
+<tr class="separator:ae69f5a72fc329f8ccc061a5d90894115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a id="a0271d71328424bd12304d89dd424d198" name="a0271d71328424bd12304d89dd424d198"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0271d71328424bd12304d89dd424d198">&#9670;&#160;</a></span>Disp_Clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Disp_Clear </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja czyszcząca wyświetlacz. </p>
+<p>Funkcja gasząca wszytkie zapalone diody </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="struct_conf.html" title="Biblioteka Obslugi wyswietlacza Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8.">Conf</a></td><td>C Struktura konfiguracyjna </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00168">168</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+<a id="a334c23d5fb66b1130d4840355f8b7d97" name="a334c23d5fb66b1130d4840355f8b7d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a334c23d5fb66b1130d4840355f8b7d97">&#9670;&#160;</a></span>Disp_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Disp_Init </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>brightness</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja inicjalizująca wyświetlacz i ustawiająca jego jasność </p>
+<p>Funkcja inicjalizująca wyświetlacz oraz ustawiająca wskazana jasnosć </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">C</td><td>Struktura konfiguracyjna </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">brightness</td><td>ustaiwenie jasności ekranu w zakresie 0-15 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00111">111</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+<a id="ae3c919c1c6081fa9872b5771ff7bc912" name="ae3c919c1c6081fa9872b5771ff7bc912"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3c919c1c6081fa9872b5771ff7bc912">&#9670;&#160;</a></span>Disp_Write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Disp_Write </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>Data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja wyświetlająca rząd na 4 wyświetlaczach. </p>
+<p>Funkcja gasząca wszytkie zapalone diody </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="struct_conf.html" title="Biblioteka Obslugi wyswietlacza Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8.">Conf</a></td><td>C Struktura konfiguracyjna </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">address</td><td>adres pod który ma zostać wysłana dana </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>Dana, która ma zostać wysłana() </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Zapal wszystkie koplumny wyświetlacza</p>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00157">157</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+<a id="ac0e47e90de0a60ccda05d53812457d3d" name="ac0e47e90de0a60ccda05d53812457d3d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0e47e90de0a60ccda05d53812457d3d">&#9670;&#160;</a></span>Disp_Write_Time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Disp_Write_Time </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>D</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja wyświetlająca czas. </p>
+<p>Funkcja wyświetlająca na ekranie czas w postaci 4 znaków odzeloych dwukropkiem pomiędzy minutami i godzinami </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="struct_conf.html" title="Biblioteka Obslugi wyswietlacza Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8.">Conf</a></td><td>C Struktura konfiguracyjna </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">D</td><td>Wskaźnik na słowo(czas) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00252">252</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+<a id="a4151110e4475806441179a1cf4579edf" name="a4151110e4475806441179a1cf4579edf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4151110e4475806441179a1cf4579edf">&#9670;&#160;</a></span>Disp_Write_Word()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Disp_Write_Word </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>D</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja wyświetlająca 4 znaki(słowo) </p>
+<p>Funkcja wyświetlająca na ekranie słowo w postaci 4 znaków na podstaiwe tabeli znaków </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="struct_conf.html" title="Biblioteka Obslugi wyswietlacza Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8.">Conf</a></td><td>C Struktura konfiguracyjna </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">D</td><td>Wskaźnik na słowo </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00181">181</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+<a id="ae69f5a72fc329f8ccc061a5d90894115" name="ae69f5a72fc329f8ccc061a5d90894115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae69f5a72fc329f8ccc061a5d90894115">&#9670;&#160;</a></span>Disp_Write_Word_Shift()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Disp_Write_Word_Shift </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>D</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja wyświetlająca napis przesuwając go od prawej do lewej. </p>
+<p>Funkcja wyświetlająca na ekranie czas w postaci 4 znaków odzeloych dwukropkiem pomiędzy minutami i godzinami </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname"><a class="el" href="struct_conf.html" title="Biblioteka Obslugi wyswietlacza Bilblioteka obsługująca 4 połacone szeregowo wyświetlacze ledowe 8*8.">Conf</a></td><td>C Struktura konfiguracyjna </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">D</td><td>Wskaźnik na słowo </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">size</td><td>Długosć słowa </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00192">192</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+<a id="a7eec93801feb43736bb0b23b7dfb4333" name="a7eec93801feb43736bb0b23b7dfb4333"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7eec93801feb43736bb0b23b7dfb4333">&#9670;&#160;</a></span>SPI_Send()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SPI_Send </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="struct_conf.html">Conf</a>&#160;</td>
+          <td class="paramname"><em>C</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>Data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Funkcja wysyłająca dane z wykorzystaniem SPI. </p>
+<p>Funkcja wysyłająca pod wskazany adres daną, która ma zostać wysłana. Nie uwzględa przy tym odpowiedniego ustawienia sygnalu CS </p><dl class="params"><dt>Parametry</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">C</td><td>Struktura konfiguracyjna </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">address</td><td>adres pod który ma zostać wysłana dana </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">Data</td><td>Dana, która ma zostać wysłana </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definicja w linii <a class="el" href="_m8___disp_8c_source.html#l00106">106</a> pliku <a class="el" href="_m8___disp_8c_source.html">M8_Disp.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Wygenerowano przez&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6
+</small></address>
+</body>
+</html>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sw_5fmind_0',['SW_mind',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['lista_20elementów_20do_20wycofania_0',['Lista elementów do wycofania',['../deprecated.html',1,'']]]
 ];
