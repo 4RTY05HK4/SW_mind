@@ -118,7 +118,6 @@ void KeyLOGIC( void * pvParameters ){
 	uint8_t keycode = 0;
 	uint16_t counter = 10000;
 	uint8_t flag = 0;
-	char *code = '0';
 
 	while(1){
 		keycode = decode();
@@ -196,7 +195,6 @@ void DispLOGIC( void * pvParameters ){
  * z zakresu od 0 do 9.
  */
 int * generateRandArray(){
-	char *code = '0';
 	static int tab[10];
 
 	for(uint8_t i=0; i<=10 ;i++){
